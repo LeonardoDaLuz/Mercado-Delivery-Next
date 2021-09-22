@@ -4,13 +4,16 @@ import { ProductLink, AdicionarRemoverDoCarrinho, Price, OffPrice, ProdutoCard_ 
 import { Row } from '@globalStyleds';
 import { adicionarProdutoAoCarrinho } from '@actions/carrinho';
 import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { quantosDesseForamAdicionadosAoCarrinho } from '@analyzers/carrinho';
 import { OfferTagSVG3 } from './OfferTagSvg3';
+import { howManyOfTheseWereAddedToTheCart } from '/utils/chartUtility';
+import Link from 'next/link';
 
 function ProductCard__({ product, adicionarProdutoAoCarrinho }) {
 
-    let addedQuantity = quantosDesseForamAdicionadosAoCarrinho(product._id);
+    const chart = useSelector(rootState => rootState.carrinho);
+    let addedQuantity = howManyOfTheseWereAddedToTheCart(chart, product._id);
 
     function RemoverDoCarrinho(e) { adicionarProdutoAoCarrinho(product._id, -1); animarAdicao(e, -1) }
 
@@ -35,12 +38,13 @@ function ProductCard__({ product, adicionarProdutoAoCarrinho }) {
         <ProdutoCard_>
 
 
-            <ProductLink href={'/product/' + product._id}>
-                <img src={configs.imgsPath + product.imgs[0]} />
-            </ProductLink>
+            <Link href={'/product/' + product._id} passHref>
+                <ProductLink  >
+                    <img src={configs.imgsPath + product.imgs[0]} />
+                </ProductLink>
+            </Link>
+            <h5> {product.title}</h5>
 
-                <h5> {product.title}</h5>
-     
             {offerEnabled &&
                 <Row>
                     {product.offer.enabled &&

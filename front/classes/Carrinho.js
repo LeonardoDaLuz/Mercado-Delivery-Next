@@ -58,8 +58,8 @@ export default class Carrinho {
         if (resp.ok) {
             resp = await resp.json();
             this.setState({ carrinhoData: resp });
-            console.log("deu");
-            console.log(this.parent.state.carrinhoData);
+            //console.log("deu");
+            //console.log(this.parent.state.carrinhoData);
         }
         else {
             console.error(resp.status);
@@ -68,7 +68,7 @@ export default class Carrinho {
 
     async editarQuantidadeDoProdutoAoCarrinho(id, quantidade) {
 
-        console.log("aki");
+        //console.log("aki");
         quantidade = parseInt(quantidade);
         if (isNaN(quantidade))
             quantidade = 0;
@@ -90,8 +90,8 @@ export default class Carrinho {
         if (resp.ok) {
             resp = await resp.json();
             this.setState({ carrinhoData: resp });
-            console.log("deu");
-            console.log(this.parent.state.carrinhoData);
+            //console.log("deu");
+            //console.log(this.parent.state.carrinhoData);
         }
         else {
             console.error(resp.status);

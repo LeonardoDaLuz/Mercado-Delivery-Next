@@ -38,7 +38,7 @@ const carousel = produce((state, action) => {
             break;
         case REMOVER_IMAGEM_CAROUSEL_START:
             state.status = 'deleting';
-            console.log(action);
+            //console.log(action);
             let deletingImage = state.images.find((image) => image._id == action.deleteImageId);
             deletingImage.status = 'deleting';
             state.deletionList = [...state.waitingImageList, action.deleteImageId];

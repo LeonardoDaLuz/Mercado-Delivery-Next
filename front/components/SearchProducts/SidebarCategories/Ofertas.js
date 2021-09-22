@@ -1,23 +1,23 @@
 import { useState } from 'react';
-import { withRouter, useHistory } from "react-router-dom";
 import { Input } from '../../../globalStyleds';
 import { OrdemSelectForm } from './styles';
 import { filtraFloat } from '../../../utils/InputFilters';
 import { loadMoreProducts } from '../../../store/actions/products';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import queryObjToQueryString from '../../../utils/queryObjToQueryString';
 
 function Ofertas_({ location, carregaMaisProdutos }) {
 
-    const history = useHistory();
-    const query = new URLSearchParams(location.search);
-    let sort = query.get('sort');
+    const router = useRouter();
+    const query = router.query;
+    let sort = query['sort'];
     sort = sort === null ? '' : sort;
 
     function aplicaOrdem(e) {
 
-        query.set("sort", e.target.value);
-        history.push(location.pathname + "?" + query.toString());
+        query["sort"] = e.target.value;
+        history.push(location.pathname + "?" + queryObjToQueryString(query));
       }
     return (<>
         <h4>Ofertas</h4>
@@ -35,4 +35,4 @@ function Ofertas_({ location, carregaMaisProdutos }) {
 const mapDispatchToProps = (dispatch) =>
     bindActionCreators({ carregaMaisProdutos: loadMoreProducts }, dispatch)
 
-export const Ofertas = connect(null, mapDispatchToProps)(withRouter(Ofertas_));
+export const Ofertas = Ofertas_;

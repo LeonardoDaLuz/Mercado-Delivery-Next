@@ -13,7 +13,7 @@ function Caroulsel_({ carousel, carregarImagensCarousel, teste }) {
         carregarImagensCarousel();
     }, [])
 
-    console.log(carousel);
+   // console.log(carousel);
     const settings = {
         dots: true,
         infinite: true,

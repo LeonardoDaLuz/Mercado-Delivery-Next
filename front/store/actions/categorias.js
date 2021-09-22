@@ -33,7 +33,7 @@ export const carregaCategorias = loadCategories;
 export const categoryRename = (fieldToRename, newName) => {
     return async (dispatch, getState) => {
 
-        console.log(fieldToRename);
+        //console.log(fieldToRename);
 
         let url = `http://localhost:3001/RenameCategory/${fieldToRename}/${newName}`;
 

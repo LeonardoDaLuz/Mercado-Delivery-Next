@@ -1,15 +1,18 @@
 
 import react, { Component } from 'react';
-import { Link, withRouter } from "react-router-dom";
+import { Link } from "next/link";
 import './Breadcumb.css';
 import { BreadcumbList } from './styles';
 import { reloadProductList } from '@actions/products';
 import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import { connect, useStore } from 'react-redux';
+import queryObjToQueryString from '../../../utils/queryObjToQueryString';
 
-function BreadCumbs({ reloadProductList, path, location }) {
+function BreadCumbs({ path }) {
 
-
+    const dispatch = useDispatch();
+    const router = useRouter;
+    const queryString = queryObjToQueryString(router.query);
     path = path.split("/");
     path.shift();
 
@@ -20,7 +23,7 @@ function BreadCumbs({ reloadProductList, path, location }) {
     path[0] = "Todos";
     var breadLis = path.map(function (cat, index) {
 
-        return (<li key={index}><Link key={index} to={links[index]} onClick={() => { reloadProductList(links[index], location.search, 12) }}>{cat}</Link></li>);
+        return (<li key={index}><Link key={index} href={links[index]} onClick={() => { dispatch(reloadProductList(links[index], queryString, 12)) }}><a>{cat}</a></Link></li>);
     });
 
     return (
@@ -36,4 +39,4 @@ function BreadCumbs({ reloadProductList, path, location }) {
 const mapDispatchToProps = dispatch =>
     bindActionCreators({ reloadProductList }, dispatch);
 
-export default connect(null, mapDispatchToProps)(withRouter(BreadCumbs));
+export default BreadCumbs;

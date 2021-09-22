@@ -15,7 +15,7 @@ export function SlickLightBox({ showState = true, imgs, selectedImageId, setSele
         afterChange: (currentSlide) => setSelectedImageId(currentSlide),
     }
 
-    console.log("eita", imgs);
+    //console.log("eita", imgs);
 
     if (showState)
         return (
@@ -25,7 +25,7 @@ export function SlickLightBox({ showState = true, imgs, selectedImageId, setSele
                 </BlackBackground>
                 <Slider {...slickSettings} style={{ height: '100%' }}>
                     {imgs.map((img, index) => {
-                        console.log(img, index);
+                        //console.log(img, index);
                         return <Center key={img}><img src={configs.imgsPath + img} /></Center>
                     }
                     )}

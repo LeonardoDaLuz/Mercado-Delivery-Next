@@ -11,6 +11,10 @@ function BreadCumbs_() {
 
     let categories = product.categories;
 
+
+    if (!categories || categories === null)
+        return <></>
+
     var CategoriesList = categories.map(function (category, index) {
         let sliced = categories.slice(0, index + 1);
 

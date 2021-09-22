@@ -3,7 +3,7 @@ import { HYDRATE } from 'next-redux-wrapper';
 
 const initialState = {
     _id: '',
-    title: 'raquete',
+    title: '',
     categories: [],
     description: '',
     imgs: [],

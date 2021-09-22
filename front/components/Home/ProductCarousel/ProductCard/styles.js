@@ -6,8 +6,6 @@ import { colorTheme } from '@colorTheme';
 
 export const ProductLink = styled.a`
     width: 100%;
- 
-    /*background-color: grey;*/
     vertical-align: middle;
     overflow: hidden;
     flex: 1 1 50px;

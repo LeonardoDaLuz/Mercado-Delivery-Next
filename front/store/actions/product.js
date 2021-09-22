@@ -29,7 +29,11 @@ export const loadProduct = (id, callback) => {
         try {
             const data = await response.json();
          //   console.log('okok', data)
-            dispatch({ type: CARREGA_PRODUTO_SUCCESS, payload: data, url });
+            if ("title" in data) {
+                dispatch({ type: CARREGA_PRODUTO_SUCCESS, payload: data, url });
+            } else {
+                dispatch({ type: CARREGA_PRODUTO_FAILURE, error: "product not found", url });
+            }
         } catch (err) {
             dispatch({ type: CARREGA_PRODUTO_FAILURE, error: err.message, url });
         }

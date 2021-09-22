@@ -69,7 +69,7 @@ function Header_({ history, location }) {
     );
 }
 
-function quantosProdutosTemNoCarrinho(carrinho) {
+function quantosProdutosTemNoCarrinho(carrinho) { //jogar isso no util depois
 
     let qty = 0;
     for (var key in carrinho.produtos) {
