@@ -60,41 +60,7 @@ export default class Sidebar extends Component {
                     <li>Inicio</li>
                     <li>Inicio</li>                    <li>Inicio</li>
                     <li>Inicio</li>
-                    <li>Inicio</li>                    <li>Inicio</li>
-                    <li>Inicio</li>
-                    <li>Inicio</li>                    <li>Inicio</li>
-                    <li>Inicio</li>
-                    <li>Inicio</li>                    <li>Inicio</li>
-                    <li>Inicio</li>
-                    <li>Inicio</li>                    <li>Inicio</li>
-                    <li>Inicio</li>
-                    <li>Inicio</li>                    <li>Inicio</li>
-                    <li>Inicio</li>
-                    <li>Inicio</li>                    <li>Inicio</li>
-                    <li>Inicio</li>
-                    <li>Inicio</li>                    <li>Inicio</li>
-                    <li>Inicio</li>
-                    <li>Inicio</li>                    <li>Inicio</li>
-                    <li>Inicio</li>
-                    <li>Inicio</li>                    <li>Inicio</li>
-                    <li>Inicio</li>
-                    <li>Inicio</li>                    <li>Inicio</li>
-                    <li>Inicio</li>
-                    <li>Inicio</li>                    <li>Inicio</li>
-                    <li>Inicio</li>
-                    <li>Inicio</li>                    <li>Inicio</li>
-                    <li>Inicio</li>
-                    <li>Inicio</li>                    <li>Inicio</li>
-                    <li>Inicio</li>
-                    <li>Inicio</li>                    <li>Inicio</li>
-                    <li>Inicio</li>
-                    <li>Inicio</li>                    <li>Inicio</li>
-                    <li>Inicio</li>
-                    <li>Inicio</li>                    <li>Inicio</li>
-                    <li>Inicio</li>
-                    <li>Inicio</li>                    <li>Inicio</li>
-                    <li>Inicio</li>
-                    <li>Inicio</li>
+
                 </ul>
                 <div className="flex-grow-1 " onClick={this.closeSidebar}></div>
             </div>

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import './style.css';
 import assets from '@assets';
 import { Container, Row, Col } from '@globalStyleds';
 import { Footer_, FooterLogo } from './style';

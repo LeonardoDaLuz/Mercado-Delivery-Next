@@ -10,10 +10,7 @@ import {
 
 export const loadMoreProducts = (path, query, quantity) => {
     return async (dispatch, getState) => {
-        //se usar o location.search ou o URLSearchParams ele começa ou não com '?', então este trecho normaliza esta diferença.
-
-
-
+               //se usar o location.search ou o URLSearchParams ele começa ou não com '?', então este trecho normaliza esta diferença.
 
         if (path.charAt(path.length - 1) === '?') {
             path = path.replace('?', '')
@@ -37,22 +34,16 @@ export const loadMoreProducts = (path, query, quantity) => {
         let url = "http://localhost:3001" + path + aPartirDe + "/" + (aPartirDe + quantity) + query;
 
         //fazendo as requisições e a emissão os actions.
-        dispatch({ type: CARREGA_MAIS_PRODUTOS_START, payload: url });
-        await fetch(url)
-            .then(r => {
-                if (r.status === 204)
-                    console.log("nenhum produto encontrado: " + url);
+        await dispatch({ type: CARREGA_MAIS_PRODUTOS_START, payload: url });
 
-                return r.json()
-            }
-            )
-            .then(data => {
-                dispatch({ type: CARREGA_MAIS_PRODUTOS_SUCCESS, payload: data, path, query });
-            })
-            .catch(err => {
-                dispatch({ type: CARREGA_MAIS_PRODUTOS_FAILURE, payload: err.message });
-            })
+        const response = await fetch(url);
 
+        try {
+            const data = await response.json();
+            dispatch({ type: CARREGA_MAIS_PRODUTOS_SUCCESS, payload: { data, path, query }});
+        } catch (err) {
+            dispatch({ type: CARREGA_MAIS_PRODUTOS_FAILURE, payload: { error: err.message, status: response.status }});
+        }  
     }
 }
 

@@ -20,18 +20,19 @@ import {
 
 export const loadProduct = (id, callback) => {
 
-    return dispatch => {
-        dispatch({ type: CARREGA_PRODUTO_START });
-        fetch('http://localhost:3001/product/' + id + "")
-            .then(body => body.json())
-            .then(data => {
-                console.log("PRODUTO CARREGADO PELO REDUX");
-                dispatch({ type: CARREGA_PRODUTO_SUCCESS, payload: data });
-            })
-            .catch(err => {
-                console.log("ERRO");
-                dispatch({ type: CARREGA_PRODUTO_FAILURE, payload: err.message });
-            })
+    return async dispatch => {
+ 
+        const url = 'http://localhost:3001/product/' + id;
+        dispatch({ type: CARREGA_PRODUTO_START, url });
+
+        const response = await fetch(url);
+        try {
+            const data = await response.json();
+         //   console.log('okok', data)
+            dispatch({ type: CARREGA_PRODUTO_SUCCESS, payload: data, url });
+        } catch (err) {
+            dispatch({ type: CARREGA_PRODUTO_FAILURE, error: err.message, url });
+        }
     }
 }
 
@@ -75,14 +76,14 @@ export const updateProduct = (editedProduct, callBackOnSuccess, callbackOnFail) 
                     callBackOnSuccess();
             } else {
                 dispatch({ type: UPDATE_PRODUCT_FAILURE, payload: data.product });
-                console.error(UPDATE_PRODUCT_FAILURE, data.result);
+             //   console.error(UPDATE_PRODUCT_FAILURE, data.result);
                 if (callBackOnSuccess)
                     callBackOnSuccess();
             }
 
         } else {
             dispatch({ type: UPDATE_PRODUCT_FAILURE, payload: response.status });
-            console.error(response.status);
+        //    console.error(response.status);
             if (callbackOnFail)
                 callBackOnSuccess();
         }

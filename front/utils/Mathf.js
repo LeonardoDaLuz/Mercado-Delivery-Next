@@ -75,5 +75,4 @@ export default class Mathf {
     }
 }
 
-window.mathf=Mathf;
 

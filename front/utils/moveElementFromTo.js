@@ -1,3 +1,6 @@
+import waitForSeconds, { waitForEndOfFrame } from "./waitForSeconds";
+import Mathf from "./Mathf";
+
 export default async function moveElementFromTo(img, from, to, dir = 1) {
 
     //   let rect = img.getBoundingClientRect();
@@ -25,15 +28,15 @@ export default async function moveElementFromTo(img, from, to, dir = 1) {
     let duracao = 0.5;
     let time = 0;
     while (time < duracao) {
-        await window.waitForEndOfFrame();
+        await waitForEndOfFrame();
         time += 0.016;
         toRect = to.getBoundingClientRect();
         fromRect = from.getBoundingClientRect();
         let progress = dir == 1 ? time / duracao : (duracao - time) / duracao;
-        updatePosition.left = window.mathf.smoothStep(fromRect.left, toRect.left, progress);
-        updatePosition.top = window.mathf.smoothStep(fromRect.top, toRect.top, progress);
-        updatePosition.width = window.mathf.sphereLerp(fromRect.width, toRect.width, progress);
-        updatePosition.height = window.mathf.sphereLerp(fromRect.height, toRect.height, progress);
+        updatePosition.left = Mathf.smoothStep(fromRect.left, toRect.left, progress);
+        updatePosition.top = Mathf.smoothStep(fromRect.top, toRect.top, progress);
+        updatePosition.width = Mathf.sphereLerp(fromRect.width, toRect.width, progress);
+        updatePosition.height = Mathf.sphereLerp(fromRect.height, toRect.height, progress);
         UpdatePosition();
     }
 

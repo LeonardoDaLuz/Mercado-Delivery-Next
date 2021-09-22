@@ -11,24 +11,40 @@ import {
     RESETA_LISTA_PRODUTOS,
     RESET_PRODUCT_LIST
 } from '../types'
+import { HYDRATE } from 'next-redux-wrapper';
 import produce from 'immer';
 
 const initialState = {
+    status: 'IDLE',
     mainSearch: [],
 };
 
 const products = produce((draftState, action) => {
+
+    const payload = action.payload;
+
     switch (action.type) {
+        case HYDRATE:
+            Object.keys(action.payload.products).forEach((key) => {
+                draftState[key] = action.payload.products[key];
+            })
+            break;
+        case CARREGA_MAIS_PRODUTOS_START:
+            draftState.status = "LOADING";
+            break;
         case CARREGA_MAIS_PRODUTOS_SUCCESS:
-            let previous = draftState[action.path + action.query];
+            let previous = draftState[payload.path + payload.query];
             previous = previous === undefined ? [] : previous;
-            draftState[action.path + action.query] = previous.concat(action.payload);
+            draftState[payload.path + payload.query] = previous.concat(payload.data);
+            draftState.status = 'SUCCESS';
             break
+        case CARREGA_MAIS_PRODUTOS_FAILURE:
+            draftState.status = 'FAILURE';
         case RESETA_LISTA_PRODUTOS:
             draftState.mainSearch = [];
             break;
         case RESET_PRODUCT_LIST:
-            Object.keys(draftState).forEach(key=>draftState[key]=[]);
+            Object.keys(draftState.mainSearch).forEach(key=>draftState.mainSearch[key]=[]);
             break;
         default:
             return draftState;

@@ -1,4 +1,5 @@
 import { CARREGA_PRODUTO_START, CARREGA_PRODUTO_SUCCESS, UPDATE_PRODUCT_SUCCESS, DELETE_PRODUCT_SUCCESS } from '../types'
+import { HYDRATE } from 'next-redux-wrapper';
 
 const initialState = {
     _id: '',
@@ -21,6 +22,8 @@ const initialState = {
 
 const product = (state = initialState, action) => {
     switch (action.type) {
+        case HYDRATE:
+            return { ...action.payload.product };
         case CARREGA_PRODUTO_SUCCESS:
             return { ...action.payload };
         case UPDATE_PRODUCT_SUCCESS:

@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import './CKEditorContentStyles.css';
+//import './CKEditorContentStyles.css';
 import { DescricaoPgProduto } from "./styles";
 
 export function ProductDescription({ product }) {

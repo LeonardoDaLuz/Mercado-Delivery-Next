@@ -1,22 +1,23 @@
 import moveElementFromTo from '@utils/moveElementFromTo';
 import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import React, { useEffect } from 'react'
 
 import { BuyFrameContainer, LikeButton, ButtonIncreaseDecrease, BotaoAzul, BotaoVerde, BlocoPreco, BlocoCalcularFrete, BlocoQuantidade } from './styles';
 import { likeProduct } from '@actions/product';
 import { carregarCarrinho, editarQuantidadeDoProdutoAoCarrinho, adicionarProdutoAoCarrinho } from '@actions/carrinho';
-import { quantosDesseForamAdicionadosAoCarrinho , custoTotalNoCarrinho } from '@analyzers/carrinho';
+import {  custoTotalNoCarrinho } from '@analyzers/carrinho';
 import { Col, Row } from '../../../globalStyleds';
 
 function BuyFrame({ product, likeProduct, adicionarProdutoAoCarrinho, editarQuantidadeDoProdutoAoCarrinho }) {
 
-    let addedQuantity = quantosDesseForamAdicionadosAoCarrinho(product._id);
+    const carrinho = useSelector(rootState => rootState.carrinho);
+    let addedQuantity = quantosDesseForamAdicionadosAoCarrinho(carrinho, product._id);
     let liked = product.likes !== undefined && product.likes.includes(0);
     let disabled = addedQuantity < 1;
 
     useEffect(() => {
-       // carregarCarrinho();
+        carregarCarrinho();
     }, []);
 
 
@@ -58,6 +59,22 @@ function BuyFrame({ product, likeProduct, adicionarProdutoAoCarrinho, editarQuan
     );
 }
 
+function quantosDesseForamAdicionadosAoCarrinho(carrinho, id) {
+
+    // console.log(storeWrapper);
+  
+     if(carrinho===undefined)
+         return 0;
+ 
+     let registroProduto = carrinho.produtos[id];
+ 
+     if (registroProduto == undefined)
+         return 0;
+ 
+     return registroProduto.quantidade;
+ }
+
+ 
 
 function animarAdicao(e, dir = 1) {
     let fromImg = document.querySelector(".productImg img");

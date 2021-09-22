@@ -1,8 +1,5 @@
 import styled from "styled-components";
-import { ButtonFlat } from "../../../globalStyleds";
 import { colorTheme } from "../../../theme";
-import { Link } from "react-router-dom";
-
 
 export const AdminOptions_ = styled.div`
     flex: 0 0 225px;
@@ -13,7 +10,7 @@ export const AdminOptions_ = styled.div`
     }
 `;
 
-export const EditButton = styled(Link)`
+export const EditButton = styled.a`
     background-color: ${colorTheme.primary(550)};
     border-color:  ${colorTheme.primary(550)};
     border-radius: 5px;

@@ -1,10 +1,13 @@
-import { Link, withRouter } from "react-router-dom"
+import Link from "next/link"
 import { BreadcumbNav } from "./styles";
 import { reloadProductList as reloadProductList } from '@actions/products';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { useRouter } from "next/router";
 
-function BreadCumbs_({ product  }) {
+
+function BreadCumbs_() {
+
+    const product = useSelector(rootState => rootState.product);
 
     let categories = product.categories;
 
@@ -14,7 +17,7 @@ function BreadCumbs_({ product  }) {
         let path = '/SearchProducts/' + sliced.join('/');
         return (
             <li key={index}>
-                <Link to={path}>{category}</Link>
+                <Link href={path}><a>{category}</a></Link>
             </li >
         );
     });
@@ -22,14 +25,12 @@ function BreadCumbs_({ product  }) {
     return (
         <BreadcumbNav aria-label="breadcrumb">
             <ol>
-                <li><Link to='/SearchProducts'>Todos</Link></li>
+                <li><Link href='/SearchProducts/'><a>Todos</a></Link></li>
                 {CategoriesList}
             </ol>
         </BreadcumbNav>
     )
 }
 
-const mapDispatchToProps = dispatch =>
-    bindActionCreators({  }, dispatch);
 
-export const BreadCumbs = connect(null, mapDispatchToProps)(withRouter(BreadCumbs_));
+export const BreadCumbs = BreadCumbs_;

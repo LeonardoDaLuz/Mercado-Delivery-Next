@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 import { carregarImagensCarousel } from "@actions/carousel";
 import { bindActionCreators } from "redux";
 
-function Caroulsel_({ carousel, carregarImagensCarousel }) {
+function Caroulsel_({ carousel, carregarImagensCarousel, teste }) {
 
     useEffect(() => {
         carregarImagensCarousel();
@@ -41,4 +41,9 @@ const mapStateToProps = (store) => ({
 const mapDispatchToProps = (dispatch) =>
     bindActionCreators({ carregarImagensCarousel }, dispatch)
 
+export async function getStaticProps(context) {
+    return {
+        props: { teste: 'leo'}
+    }
+}
 export const Caroulsel = connect(mapStateToProps, mapDispatchToProps)(Caroulsel_);

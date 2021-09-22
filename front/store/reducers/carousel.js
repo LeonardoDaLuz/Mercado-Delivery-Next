@@ -1,5 +1,6 @@
 import { arrayRemove } from '../../utils/arrayUtils';
 import produce from "immer";
+import { HYDRATE } from 'next-redux-wrapper';
 import {
     CARREGAR_IMAGENS_CAROUSEL,
     CARREGAR_IMAGENS_CAROUSEL_START,
@@ -24,6 +25,11 @@ const initialState = {
 const carousel = produce((state, action) => {
 
     switch (action.type) {
+        case HYDRATE:
+            Object.keys(action.payload.carousel).forEach((key) => {
+                state[key] = action.payload.carousel[key];
+            })
+            break;
         case CARREGAR_IMAGENS_CAROUSEL_START:
             state.status = 'loading';
             break;
@@ -33,9 +39,9 @@ const carousel = produce((state, action) => {
         case REMOVER_IMAGEM_CAROUSEL_START:
             state.status = 'deleting';
             console.log(action);
-            let deletingImage = state.images.find((image)=>image._id==action.deleteImageId);
+            let deletingImage = state.images.find((image) => image._id == action.deleteImageId);
             deletingImage.status = 'deleting';
-            state.deletionList =  [...state.waitingImageList, action.deleteImageId];
+            state.deletionList = [...state.waitingImageList, action.deleteImageId];
             break;
         case CARREGAR_IMAGENS_CAROUSEL_SUCCESS:
             state.status = 'done';
