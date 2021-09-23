@@ -34,9 +34,10 @@ const products = produce((draftState, action) => {
             draftState.status = "LOADING";
             break;
         case CARREGA_MAIS_PRODUTOS_SUCCESS:
-            let previousProductList = draftState[payload.path + payload.query];
+            const currentKey = combinePathWithQuery2(payload.path, payload.query);
+            let previousProductList = draftState[currentKey];
             previousProductList = previousProductList === undefined ? [] : previousProductList;
-            draftState[combinePathWithQuery2(payload.path, payload.query)] = previousProductList.concat(payload.data);
+            draftState[currentKey] = previousProductList.concat(payload.data);
             draftState.status = 'SUCCESS';
             break
         case CARREGA_MAIS_PRODUTOS_FAILURE:

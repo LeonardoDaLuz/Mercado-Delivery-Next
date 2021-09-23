@@ -4,35 +4,39 @@ import { FaixaDePrecoForm } from './styles';
 import queryObjToQueryString from '../../../utils/queryObjToQueryString';
 import { useRouter } from 'next/router';
 
-function PriceRange_({ location, carregaMaisProdutos }) {
+function PriceRange_() {
 
     const router = useRouter();
-    const queryObj = router.query;
-    //let query = new URLSearchParams(location.search);
 
-    const [minimo, _setMinimo] = useState(filtraFloat(queryObj["menorPreco"]));
-    const [maximo, _setMaximo] = useState(filtraFloat(queryObj["maiorPreco"]));
+    const queryObj = router.query;
+    const categoryPathObj = queryObj['category'] || [];
+    const currentPathString = '/search/' + categoryPathObj.join('/');
+
+    
+    let urlSearchParams = new URLSearchParams(router.asPath.split("?").pop());
+    const [minimo, _setMinimo] = useState(filtraFloat(urlSearchParams.get('menorPreco')));
+    const [maximo, _setMaximo] = useState(filtraFloat(urlSearchParams.get('maiorPreco')));
 
     const setMinimo = (e) => { _setMinimo(filtraFloat(e.target.value)); }
 
     const setMaximo = (e) => { _setMaximo(filtraFloat(e.target.value)); }
 
-   
+
     function aplicaFaixaDePreco(e) {
 
         e.preventDefault();
 
         if (minimo != "")
-            query.set('menorPreco', filtraFloat(minimo));
+            queryObj['menorPreco'] = filtraFloat(minimo);
         else
-            query.delete('menorPreco');
+            delete queryObj['menorPreco'];
 
         if (maximo != "")
-            query.set("maiorPreco", filtraFloat(maximo));
+            queryObj["maiorPreco"] = filtraFloat(maximo);
         else
-            query.delete("maiorPreco")
+            delete queryObj["maiorPreco"];
 
-        router.push(router.pathname + "?" + queryObjToQueryString(queryObj));
+        router.push(currentPathString + "?" + queryObjToQueryString(queryObj));
     }
 
     return (<>

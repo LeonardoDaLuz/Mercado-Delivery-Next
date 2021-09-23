@@ -32,7 +32,7 @@ export const loadMoreProducts = (path, query, quantity) => {
         const slicesFrom = currentLoadedProducts.length;
 
         //Montando a url de pesquisa q será interpretada pelo backend.
-        let url = "http://localhost:3001" + combinePathWithQuery2(path + '/' + slicesFrom + "/" + (slicesFrom + quantity), query);
+        let url = "http://localhost:3001" + "/search"+combinePathWithQuery2(path + '/' + slicesFrom + "/" + (slicesFrom + quantity), query);
 
         //fazendo as requisições e a emissão os actions.
         await dispatch({ type: CARREGA_MAIS_PRODUTOS_START, payload: url });

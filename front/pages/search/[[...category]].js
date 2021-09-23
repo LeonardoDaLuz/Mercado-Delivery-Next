@@ -29,48 +29,73 @@ function Search() {
   const router = useRouter();
   const dispatch = useDispatch();
   const query = router.query;
-  const categoryPathObj = router.query['category'];
-  let path = categoryPathObj? '/search/'+categoryPathObj.join('/'):'/';
 
-  console.log('basePath', router.basePath)
-  const products = useSelector(rootState => rootState.products[combinePathWithQuery2(path, query)] || []);
+  /* existe um bug no next onde ele não pega a query inteira no primeiro render, então é preciso fazer este workaround: */
+  
+  const urlSearchParams = new URLSearchParams(router.asPath.split("?").pop()); //
+  if (urlSearchParams.get('menorPreco'))
+    query['menorPreco'] = urlSearchParams.get('menorPreco');
+
+  if (urlSearchParams.get('maiorPreco'))
+    query['maiorPreco'] = urlSearchParams.get('maiorPreco');
+  
+    if (urlSearchParams.get('sort'))
+    query['sort'] = urlSearchParams.get('sort');
+
+  /* ------  */
+
+  const categoryPathObj = router.query['category'];
+
+  let categoryPathString = categoryPathObj ? '/' + categoryPathObj.join('/') : '';
+
+  const products = useSelector(rootState => rootState.products[combinePathWithQuery2(categoryPathString, query)] || []);
 
 
   const listaDeProdutosElem = useRef(null);
 
 
+
+
   useEffect(() => {
 
-    if (typeof window !== 'undefined') {
-      ligarInfiniteLoader();
+    console.log('categoryPathString', categoryPathString)
+    console.log('query', query)
 
-      return desligaInfiniteLoader;
+    if (typeof window !== 'undefined') {
+      return ligarInfiniteLoader();
     }
 
-  }, [path, query])
+  }, [router.asPath]) //somente reseta o loader quando a url muda.
 
   async function ligarInfiniteLoader() {
 
     let tries = 5;
-    while (listaDeProdutosElem.current.clientHeight < window.innerHeight && tries > 0) { //Faz com que mais produtos sejam carregados até que preencha a tela toda.
+    while (listaDeProdutosElem.current.clientHeight < window.innerHeight + 1000 && tries > 0) { //Faz com que mais produtos sejam carregados até que preencha a tela toda.
 
       tries--;
-      await dispatch(loadMoreProducts(path, query, 12)); //Aqui, o location.pathname é usado pois este path é usado na especificação da busca na api.
+      await dispatch(loadMoreProducts(categoryPathString, query, 12)); //Aqui, o location.pathname é usado pois este path é usado na especificação da busca na api.
       await waitForSeconds(0.5);
     }
 
-    window.onscroll = infiniteLoadOnScroll;
-  }
+    let loading = false;
 
-  function desligaInfiniteLoader() {
-    window.onscroll = null;
-  }
+    window.onscroll = async (e) => { //carrega mais produtos a medida que dá scroll (infinite loader)
 
-  async function infiniteLoadOnScroll(e) { //carrega mais produtos a medida que dá scroll (infinite loader)
-    if (window.pageYOffset > document.body.clientHeight - window.innerHeight - 600) {
-      await dispatch(loadMoreProducts(path, query, 12));
+      if (!loading && window.pageYOffset > document.body.clientHeight - window.innerHeight - 600) {
+        loading = true;
+        await dispatch(loadMoreProducts(categoryPathString, query, 12));
+        loading = false;
+      }
+    };
+
+    function desligaInfiniteLoader() {
+      window.onscroll = null;
     }
+
+    return desligaInfiniteLoader;
   }
+
+
 
   let produtoCards = products.map((p, index) => {
     return <ProductCard product={p} key={index} />
