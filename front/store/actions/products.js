@@ -1,3 +1,4 @@
+import { combinePathWithQuery2 } from '../../utils/combinePathWithQuery'
 import {
     CARREGA_MAIS_PRODUTOS_START,
     CARREGA_MAIS_PRODUTOS_SUCCESS,
@@ -10,28 +11,28 @@ import {
 
 export const loadMoreProducts = (path, query, quantity) => {
     return async (dispatch, getState) => {
-               //se usar o location.search ou o URLSearchParams ele começa ou não com '?', então este trecho normaliza esta diferença.
+        //se usar o location.search ou o URLSearchParams ele começa ou não com '?', então este trecho normaliza esta diferença.
+        /*
+                if (path.charAt(path.length - 1) === '?') {
+                    path = path.replace('?', '')
+                }
+        
+                if (path[path.length - 1] !== "/")
+                    path += "/";
+        
+                query = query.toString();
+                if (!query.startsWith('?'))
+                    query = '?' + query;*/
 
-        if (path.charAt(path.length - 1) === '?') {
-            path = path.replace('?', '')
-        }
+        let currentLoadedProducts = getState().products[combinePathWithQuery2(path, query)];
 
-        if (path[path.length - 1] !== "/")
-            path += "/";
+        if (currentLoadedProducts === undefined)
+            currentLoadedProducts = [];
 
-        query = query.toString();
-        if (!query.startsWith('?'))
-            query = '?' + query;
-
-        let produtos = getState().products[path + query];
-
-        if(produtos===undefined)
-            produtos = [];
-
-        const aPartirDe = produtos.length;
+        const slicesFrom = currentLoadedProducts.length;
 
         //Montando a url de pesquisa q será interpretada pelo backend.
-        let url = "http://localhost:3001" + path + aPartirDe + "/" + (aPartirDe + quantity) + query;
+        let url = "http://localhost:3001" + combinePathWithQuery2(path + '/' + slicesFrom + "/" + (slicesFrom + quantity), query);
 
         //fazendo as requisições e a emissão os actions.
         await dispatch({ type: CARREGA_MAIS_PRODUTOS_START, payload: url });
@@ -40,10 +41,10 @@ export const loadMoreProducts = (path, query, quantity) => {
 
         try {
             const data = await response.json();
-            dispatch({ type: CARREGA_MAIS_PRODUTOS_SUCCESS, payload: { data, path, query }});
+            dispatch({ type: CARREGA_MAIS_PRODUTOS_SUCCESS, payload: { data, path, query }, url });
         } catch (err) {
-            dispatch({ type: CARREGA_MAIS_PRODUTOS_FAILURE, payload: { error: err.message, status: response.status }});
-        }  
+            dispatch({ type: CARREGA_MAIS_PRODUTOS_FAILURE, payload: { error: err.message, status: response.status }, url });
+        }
     }
 }
 
@@ -56,7 +57,7 @@ export const reloadProductList = (path, query, quantidade) => {
 
 export const resetProductList = (path, query, quantidade) => {
     return async (dispatch, getState) => {
-        dispatch({ type: RESET_PRODUCT_LIST });       
+        dispatch({ type: RESET_PRODUCT_LIST });
     }
 }
 

@@ -13,6 +13,7 @@ import {
 } from '../types'
 import { HYDRATE } from 'next-redux-wrapper';
 import produce from 'immer';
+import { combinePathWithQuery2 } from 'utils/combinePathWithQuery';
 
 const initialState = {
     status: 'IDLE',
@@ -26,16 +27,16 @@ const products = produce((draftState, action) => {
     switch (action.type) {
         case HYDRATE:
             Object.keys(action.payload.products).forEach((key) => {
-                draftState[key] = action.payload.products[key];
+               // draftState[key] = action.payload.products[key];
             })
             break;
         case CARREGA_MAIS_PRODUTOS_START:
             draftState.status = "LOADING";
             break;
         case CARREGA_MAIS_PRODUTOS_SUCCESS:
-            let previous = draftState[payload.path + payload.query];
-            previous = previous === undefined ? [] : previous;
-            draftState[payload.path + payload.query] = previous.concat(payload.data);
+            let previousProductList = draftState[payload.path + payload.query];
+            previousProductList = previousProductList === undefined ? [] : previousProductList;
+            draftState[combinePathWithQuery2(payload.path, payload.query)] = previousProductList.concat(payload.data);
             draftState.status = 'SUCCESS';
             break
         case CARREGA_MAIS_PRODUTOS_FAILURE:

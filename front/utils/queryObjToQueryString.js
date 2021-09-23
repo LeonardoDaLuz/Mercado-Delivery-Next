@@ -1,7 +1,7 @@
-export default function queryObjToQueryString() {
+export default function queryObjToQueryString(queryObj) {
     const urlSearchParams = new URLSearchParams();
-    Object.keys(query).forEach(key => {
-        urlSearchParams.append(key, query[key]);
+    Object.keys(queryObj).forEach(key => {
+        urlSearchParams.append(key, queryObj[key]);
     })
     
     return urlSearchParams.toString();

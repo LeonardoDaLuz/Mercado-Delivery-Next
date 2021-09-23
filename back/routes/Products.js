@@ -10,11 +10,11 @@ module.exports = (app) => {
 
     //app.get("/produtos/:cat1?/:cat2?/:cat3?/:cat4?/:cat5?/:to", ProductsController.listProducts);
 
-    app.get("/SearchProducts/", ProductsController.listProducts);
+    app.get("/search/", ProductsController.listProducts);
 
-    app.get("/SearchProducts/:cat1?/:cat2?/:cat3?/:cat4?/:cat5?/:from/:to", ProductsController.listProducts);
+    app.get("/search/:cat1?/:cat2?/:cat3?/:cat4?/:cat5?/:from/:to", ProductsController.listProducts);
     
-    app.get("/SearchProducts/:cat1?/:cat2?/:cat3?/:cat4?/:cat5?/:to", ProductsController.listProducts);
+    app.get("/search/:cat1?/:cat2?/:cat3?/:cat4?/:cat5?/:to", ProductsController.listProducts);
 
     app.get("/product/:id", ProductsController.getProduct);
 
