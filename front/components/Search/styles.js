@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import assets from '@assets';
 import { Row } from '@globalStyleds';
+import { colorTheme } from '../../theme';
 
 export const Container = styled.section`
     width: 100%;
@@ -21,8 +22,17 @@ export const ListaDeProdutos = styled.ul.attrs({
     /*width: 100%;
     max-width: 75%;*/
     flex-wrap: wrap;
-    padding: 0px;
-    
+    padding: 0px;   
+
+`;
+
+export const LoadingMessage = styled.div`
+
+    color: ${colorTheme.primary};
+    width: 100%;
+    text-align: center;
+    margin-top: 250px;
+    font-size: 25px;
 
 `;
 

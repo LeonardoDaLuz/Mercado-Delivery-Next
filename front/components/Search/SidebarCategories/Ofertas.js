@@ -12,22 +12,21 @@ function Ofertas_() {
 
     const router = useRouter();
     const query = router.query;
-    let sort = query['sort'];
-    sort = sort === null ? '' : sort;
+    const sort = query['offer'] || '';
 
     function aplicaOrdem(e) {
 
-        query["sort"] = e.target.value;
-        history.push(router.pathname + "?" + queryObjToQueryString(query));
+        query["offer"] = e.target.value;
+        router.push(router.pathname + "?" + queryObjToQueryString(query));
       }
     return (<>
         <h4>Ofertas</h4>
         <OrdemSelectForm >
             <select name="ofertas" id="ofertas" value={sort} onChange={aplicaOrdem}>
-                <option value="nenhum"> </option>
-                <option value="menorPreco">Ofertas do dia</option>
-                <option value="maiorPreco">Ofertas da semana</option>
-                <option value="maiorPreco">Ofertas do mês</option>
+                <option value=""> </option>
+                <option value="day">Ofertas do dia</option>
+                <option value="week">Ofertas da semana</option>
+                <option value="month">Ofertas do mês</option>
             </select>
         </OrdemSelectForm>
     </>);

@@ -10,16 +10,16 @@ class ProductsController {
 
         let min = filtraFloat(req.query.menorPreco);
         let max = filtraFloat(req.query.maiorPreco);
-        let busca = filtraString(req.query.busca);
+        let q = filtraString(req.query.q);
         let offer = filtraString(req.query.offer);
 
         query.price = { $gte: 0.01 };
 
-        if (busca != '') {
+        if (q != '') {
             query.$or =
                 [
-                    { title: { $regex: busca, $options: 'i' } },
-                    { description: { $regex: busca, $options: 'i' } },
+                    { title: { $regex: q, $options: 'i' } },
+                    { description: { $regex: q, $options: 'i' } },
                 ]
         }
 

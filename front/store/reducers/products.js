@@ -17,6 +17,7 @@ import { combinePathWithQuery2 } from 'utils/combinePathWithQuery';
 
 const initialState = {
     status: 'IDLE',
+    loadingStarted: null,
     mainSearch: [],
 };
 

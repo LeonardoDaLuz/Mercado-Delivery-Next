@@ -17,6 +17,7 @@ import { Container, ListaDeProdutos } from 'components/Search/styles';
 import SidebarCategories from '../../components/Search/SidebarCategories';
 import waitForSeconds from '../../utils/waitForSeconds';
 import ProductCard from '../../components/Search/ProductCard';
+import { LoadingMessage } from '../../components/Search/styles';
 
 const Title = styled.h1`
   color: green;
@@ -31,16 +32,20 @@ function Search() {
   const query = router.query;
 
   /* existe um bug no next onde ele não pega a query inteira no primeiro render, então é preciso fazer este workaround: */
-  
+
   const urlSearchParams = new URLSearchParams(router.asPath.split("?").pop()); //
   if (urlSearchParams.get('menorPreco'))
     query['menorPreco'] = urlSearchParams.get('menorPreco');
 
   if (urlSearchParams.get('maiorPreco'))
     query['maiorPreco'] = urlSearchParams.get('maiorPreco');
-  
-    if (urlSearchParams.get('sort'))
+
+  if (urlSearchParams.get('sort'))
     query['sort'] = urlSearchParams.get('sort');
+  
+  
+    if (urlSearchParams.get('q'))
+    query['q'] = urlSearchParams.get('q');
 
   /* ------  */
 
@@ -48,12 +53,9 @@ function Search() {
 
   let categoryPathString = categoryPathObj ? '/' + categoryPathObj.join('/') : '';
 
-  const products = useSelector(rootState => rootState.products[combinePathWithQuery2(categoryPathString, query)] || []);
-
+  const [products, status] = useSelector(rootState => [rootState.products[combinePathWithQuery2(categoryPathString, query)], rootState.products.status]);
 
   const listaDeProdutosElem = useRef(null);
-
-
 
 
   useEffect(() => {
@@ -95,20 +97,28 @@ function Search() {
     return desligaInfiniteLoader;
   }
 
+  let content = '';
 
 
-  let produtoCards = products.map((p, index) => {
-    return <ProductCard product={p} key={index} />
-  })
-
+  if (products) {
+    if (products.length > 0)
+      content = products.map((p, index) => {
+        return <ProductCard product={p} key={index} />
+      });
+    else {
+      content = <div>Não foram encontrados resultados...</div>
+    }
+  } else {
+    if (status == "LOADING") {
+      content = <LoadingMessage>Carregando...</LoadingMessage>
+    }
+  }
 
   return (
     <Container>
       <SidebarCategories />
       <ListaDeProdutos ref={listaDeProdutosElem}>
-
-        {produtoCards}
-
+        {content}
       </ListaDeProdutos>
     </Container>
 

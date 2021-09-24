@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { bindActionCreators } from 'redux';
 import assets from '/assets';
 import { carregarCarrinho } from '/store/actions/carrinho';
@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Link from 'next/link';
 import Sidebar from '../Sidebar';
 import BarraCategorias from '../BarraCategorias';
+import { combinePathWithQuery2 } from 'utils/combinePathWithQuery';
 
 
 function Header_({ history, location }) {
@@ -18,8 +19,8 @@ function Header_({ history, location }) {
     const router = useRouter();
     const dispatch = useDispatch();
     const carrinhoState = useSelector(rootState => rootState.carrinho);
-    let query = new URLSearchParams(router.query);
-    let teste = 'asdasd';
+    const buscaTxt = new URLSearchParams(router.asPath.split('?').pop()).get('q');
+    const [buscaState, setBuscaState] = useState(buscaTxt);
 
     useEffect(() => {
         dispatch(carregarCarrinho());
@@ -27,10 +28,9 @@ function Header_({ history, location }) {
 
     function buscaSubmit(e) {
         e.preventDefault();
-        let query = new URLSearchParams(router.query);
         let formData = new FormData(e.target);
-        query.set('busca', formData.get('busca'));
-        history.push('/SearchProducts?' + query);
+        let searchedText = formData.get('busca');
+        router.push('/search?q=' + searchedText);
     }
 
     return (
@@ -43,7 +43,7 @@ function Header_({ history, location }) {
                             <NavbarLogo href="/" passHref></NavbarLogo>
                         </Link>
                         <SearchBar onSubmit={buscaSubmit}>
-                            <input type='text' name="busca" />
+                            <input type='text' name="busca" onChange={(e) => setBuscaState(e.target.value)} value={buscaState}/>
                             <ButtonOutline type='submit'>Buscar</ButtonOutline>
                         </SearchBar>
                         <Sandwich id="sidebar-toogler">
@@ -79,7 +79,7 @@ function quantosProdutosTemNoCarrinho(carrinho) { //jogar isso no util depois
 }
 
 function custoTotalNoCarrinho(carrinho) {
-    
+
     let custo = 0;
 
     for (var key in carrinho.produtos) {
