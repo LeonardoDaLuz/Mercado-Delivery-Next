@@ -43,7 +43,7 @@ function Header_({ history, location }) {
                             <NavbarLogo href="/" passHref></NavbarLogo>
                         </Link>
                         <SearchBar onSubmit={buscaSubmit}>
-                            <input type='text' name="busca" onChange={(e) => setBuscaState(e.target.value)} value={buscaState}/>
+                            <input type='text' name="busca" onChange={(e) => setBuscaState(e.target.value)} value={buscaState || ''}/>
                             <ButtonOutline type='submit'>Buscar</ButtonOutline>
                         </SearchBar>
                         <Sandwich id="sidebar-toogler">

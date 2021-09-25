@@ -15,9 +15,12 @@ import {
 
 export const carregarImagensCarousel = (id, quantidade) => {
     return async dispatch => {
-        dispatch({ type: CARREGAR_IMAGENS_CAROUSEL_START });
 
-        let response = await fetch(`http://localhost:3001/carousel/`, { method: 'GET' });
+        const url = 'http://localhost:3001/carousel/';
+        
+        dispatch({ type: CARREGAR_IMAGENS_CAROUSEL_START, url });
+
+        let response = await fetch(url, { method: 'GET' });
         if (response.ok) {
             let data = await response.json();
             dispatch({ type: CARREGAR_IMAGENS_CAROUSEL_SUCCESS, payload: data });
@@ -32,13 +35,15 @@ export const carregarImagensCarousel = (id, quantidade) => {
 export const uploadImagensCarousel = (e) => {
     return async dispatch => {
 
-        dispatch({ type: UPLOAD_IMAGENS_CAROUSEL_START });
+        const url = 'http://localhost:3001/carousel/addImages';
+
+        dispatch({ type: UPLOAD_IMAGENS_CAROUSEL_START, url });
 
         let files = e.target.files;
 
         const formData = new FormData();
 
-        const url = 'http://localhost:3001/carousel/addImages';
+
 
         [...files].forEach((file, index) => formData.append('file' + index, file));
 
@@ -50,9 +55,9 @@ export const uploadImagensCarousel = (e) => {
         let response = await fetch(url, config);
         if (response.ok) {
             let data = await response.json();
-            dispatch({ type: UPLOAD_IMAGENS_CAROUSEL_SUCCESS, payload: data });
+            dispatch({ type: UPLOAD_IMAGENS_CAROUSEL_SUCCESS, payload: data, url });
         } else {
-            dispatch({ type: UPLOAD_IMAGENS_CAROUSEL_FAILURE, payload: response.status });
+            dispatch({ type: UPLOAD_IMAGENS_CAROUSEL_FAILURE, payload: response.status, url });
             console.error(response.status);
         }
     }

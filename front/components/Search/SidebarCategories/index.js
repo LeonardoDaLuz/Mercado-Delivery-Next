@@ -1,7 +1,7 @@
 import react, { useEffect } from 'react';
 import { loadCategories } from '../../../store/actions/categorias';
 import Breadcumbs from "./Breadcumb";
-import { CategoriasAside, FaixaDePrecoForm, ListaCategorias } from './styles';
+import { CategoriasAside, FaixaDePrecoForm, ListaCategorias, SidebarBuscaContainer } from './styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { PriceRange } from './PriceRange';
 import { Order } from './Order';
@@ -27,11 +27,14 @@ function SidebarCategories() {
 
         const currentCategoryPath = categoryPathObj ? '/' + categoryPathObj.join('/') : '/';
 
+        const queryWithoutSearch = Object.assign({}, router.query);
+        delete queryWithoutSearch['q'];
+
         let resultado = keys.map((key, index) => {
 
             return (
                 <li key={key}>
-                    <Link href={'/search/' + currentCategoryPath + '/' + key + '?' + queryObjToQueryString(router.query)}>
+                    <Link href={'/search' + currentCategoryPath + '/' + key + '?' + queryObjToQueryString(queryWithoutSearch)}>
                         <a>{key}</a>
                     </Link>
                 </li>);
@@ -56,10 +59,11 @@ function SidebarCategories() {
 
     const isRoot = categoryPathObj === undefined;
     const categoriaSelecionada = selecionaSubcategoria(categories, categoryPathObj);
-    const title = categoryPathObj ? categoryPathObj[categoryPathObj.length - 1] : 'Todos';
+    const title = router.query['q']?  'Categorias'   : categoryPathObj ? categoryPathObj[categoryPathObj.length - 1] : 'Todos';
 
     return (
         <CategoriasAside>
+            <IndicadorDeBusca />
             {!isRoot &&
                 <Breadcumbs />
             }
@@ -72,6 +76,21 @@ function SidebarCategories() {
     )
 
 
+}
+
+function IndicadorDeBusca() {
+
+    const router = useRouter();
+
+    if (!router.query['q'])
+        return <></>
+
+    return (
+        <SidebarBuscaContainer>
+            <h3>Busca</h3>
+            <div>Resultados para <strong>{router.query['q']}</strong></div>
+        </SidebarBuscaContainer>
+    );
 }
 
 

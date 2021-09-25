@@ -1,15 +1,15 @@
 import { nestedPropertySeletor } from "../../utils/nestedPropertySelector";
 import { FolderBackground, ThumbnailSelector, NewCategory } from "./style";
-import { Link } from "react-router-dom";
+import Link  from "next/link";
 import { ButtonFlat } from "../../globalStyleds";
 import assets from "../../assets";
-import { Category } from './Category';
+import CategoryItem from './CategoryItem';
 
-function drawPropertiesAsFolder_(obj, objectPath, linkPath) {
+function drawPropertiesAsFolder_(obj, pathAsString, pathAsArray) {
     if (obj === undefined)
         return <></>;
 
-    const currentFolder = nestedPropertySeletor(obj, objectPath).get();
+    const currentFolder = nestedPropertySeletor(obj, pathAsString).get();
 
     if (currentFolder === undefined)
         return <></>;
@@ -21,11 +21,11 @@ function drawPropertiesAsFolder_(obj, objectPath, linkPath) {
                 {
                     Object.keys(currentFolder)
                         .filter(key => key.charAt(0) !== '_')
-                        .map(key => (<Category key={key} name={key} linkPath={linkPath} objectPath={objectPath} categoryObject={currentFolder[key]} />))
+                        .map(key => (<CategoryItem key={key} name={key} pathAsArray={pathAsArray} pathAsString={pathAsString} categoryObject={currentFolder[key]} />))
 
                 }
                 <hr />
-                <NewCategory><Link>Adicionar Nova Categoria</Link></NewCategory>
+                <NewCategory><Link href='/'>Adicionar Nova Categoria</Link></NewCategory>
             </FolderBackground>
             <ThumbnailSelector>
                 <h4>Thumbnail:</h4>

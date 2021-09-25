@@ -1,6 +1,6 @@
 import { OfertasDoDiaContainer } from "./styles";
 import React, { useEffect, useRef } from "react";
-import { connect } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import { carregarImagensCarousel } from "../../../store/actions/carousel";
 import { bindActionCreators } from "redux";
 import { CenterContainer } from "../../../globalStyleds";
@@ -8,15 +8,18 @@ import { loadHome } from '@actions/home';
 import Slider from 'react-slick';
 import { ProductCard } from "./ProductCard";
 import { loadMoreProducts } from '@actions/products';
-import { combinePathWithQuery } from "../../../utils/combinePathWithQuery";
+import { combinePathWithQuery, combinePathWithQuery2 } from "../../../utils/combinePathWithQuery";
 
-function ProductCarousel_({ title, produtos, path, query, loadMoreProducts }) {
+function ProductCarousel_({ title, path, query}) {
+
+    const dispatch = useDispatch();
+    const allProducts = useSelector(rootState => rootState.products);
 
     useEffect(() => {
-        loadMoreProducts(path, query, 12);
+        dispatch(loadMoreProducts(path, query, 12));
     }, [])
 
-    produtos = produtos[combinePathWithQuery(path, query)];
+    let produtos = allProducts[combinePathWithQuery2(path, query)];
     produtos = produtos === undefined ? [] : produtos;
 
     if (produtos.length < 3)
@@ -49,11 +52,4 @@ function ProductCarousel_({ title, produtos, path, query, loadMoreProducts }) {
 
 
 
-const mapStateToProps = (store) => ({
-    produtos: store.products
-})
-
-const mapDispatchToProps = (dispatch) =>
-    bindActionCreators({ loadMoreProducts }, dispatch)
-
-export const ProductCarousel = connect(mapStateToProps, mapDispatchToProps)(ProductCarousel_);
+export const ProductCarousel = ProductCarousel_;

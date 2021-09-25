@@ -26,9 +26,9 @@ const Index = ({ teste }) => {
     <div>
 
       <Caroulsel />
-      <ProductCarousel title='Ofertas do Dia' path='/SearchProducts/' query='offer=day' /><br />
-      <ProductCarousel title='Ofertas da Semana' path='/SearchProducts/' query='offer=week' /><br />
-      <ProductCarousel title='Ofertas do Mês' path='/SearchProducts/' query='offer=month' /><br />
+      <ProductCarousel title='Ofertas do Dia' path='' query={{offer: 'day'}} /><br />
+      <ProductCarousel title='Ofertas da Semana' path='' query={{offer: 'week'}} /><br />
+      <ProductCarousel title='Ofertas do Mês' path='' query={{offer: 'month'}} /><br />
 
     </div>
   )
@@ -46,9 +46,9 @@ export const getStaticProps = storeWrapper.getStaticProps((store) => {
   return async (context) => {
 
     await store.dispatch(carregarImagensCarousel());
-    await store.dispatch(loadMoreProducts('/SearchProducts/', 'offer=day', 12))
-    await store.dispatch(loadMoreProducts('/SearchProducts/', 'offer=week', 12))
-    await store.dispatch(loadMoreProducts('/SearchProducts/', 'offer=month', 12))
+    await store.dispatch(loadMoreProducts('', {offer: 'day'}, 12))
+    await store.dispatch(loadMoreProducts('', {offer: 'week'}, 12))
+    await store.dispatch(loadMoreProducts('', {offer: 'month'}, 12))
 
     return {
       props: {}, // will be passed to the page component as props

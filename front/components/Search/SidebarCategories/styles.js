@@ -84,3 +84,8 @@ export const OrdemSelectForm = styled.form`
 
 
 `;
+
+export const SidebarBuscaContainer = styled.div`
+    margin-bottom: 25px;
+
+`;

@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import React from 'react';
 import { PathBreadcrumbs }from './style';
 
@@ -9,17 +9,17 @@ function CategoryBreadcrumbs_({ objectPath, rootPath }) {
     console.log(pathArray);
     return (
         <PathBreadcrumbs>
-            <Link className={exitFolderClasses} to={'/CategoryManager/' + pathArray.slice(0, pathArray.length - 1).join('/')}></Link>
-            <Link key='0' to='/CategoryManager/'>Todas</Link>
+            <Link className={exitFolderClasses} href={'/categoryManager/' + pathArray.slice(0, pathArray.length - 1).join('/')}><a></a></Link>
+            <Link key='0' href='/categoryManager/'>Todas</Link>
 
             {pathArray.map((item, index) => {
 
-                let to = '/CategoryManager/' + pathArray.slice(0, index + 1).join('/');
+                let href = '/categoryManager/' + pathArray.slice(0, index + 1).join('/');
 
                 return (
                     <React.Fragment key={index}>
                         <span className='separator'>{'>'}</span>
-                        <Link to={to}>{item}</Link>
+                        <Link href={href}>{item}</Link>
                     </React.Fragment>
                 )
             }

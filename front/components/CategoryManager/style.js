@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { Container } from "../../globalStyleds";
 import { colorTheme } from "../../theme";
 import assets from '@assets';
-import { Link } from "react-router-dom";
+
 export const CategoryManager_ = styled(Container)`
     h1 {
         margin-top: 25px;

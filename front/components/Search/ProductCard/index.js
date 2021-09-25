@@ -39,10 +39,12 @@ function ProdutoCard({ product, index }) {
 
     return (
         <ProdutoCard_ key={index}>
-            <ProductLink to={'/product/' + product._id}>
-                <img src={configs.imgsPath + product.imgs[0]} />
-            </ProductLink>
-            <h5>{product.title}</h5>
+            <Link href={'/product/' + product._id} passHref>
+                <ProductLink>
+                    <img src={configs.imgsPath + product.imgs[0]} />
+                </ProductLink>
+            </Link>
+          <h5>{product.title}</h5>
             {offerEnabled &&
                 <Row>
                     {product.offer.enabled &&

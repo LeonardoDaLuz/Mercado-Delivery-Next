@@ -3,7 +3,7 @@ const ObjectId = require("mongodb").ObjectID;
 const fs = require('fs');
 const path = require('path');
 
-class UploadController {
+class UploadController { /* DEPRECATED */
 
     static uploadImages(req, res, next) {
         let now = new Date();

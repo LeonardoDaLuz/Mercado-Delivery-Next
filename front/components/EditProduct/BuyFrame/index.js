@@ -13,7 +13,7 @@ import { ButtonFlat } from '../../../globalStyleds';
 import { filtraFloat } from '../../../utils/InputFilters';
 import { LogRender } from '../../../utils/logRender';
 
-function BuyFrame({ draftProduct, handleChanges, draftStatus, discardChanges }) {
+export default function BuyFrame({ draftProduct, handleChanges, draftStatus, discardChanges }) {
     /*
         function filterAndChangePrice(e) {
             let { name, value } = e.target;
@@ -140,12 +140,3 @@ function convertDateToInputDateValue(date) {
     return currentDate;
 }
 
-const mapStateToProps = store => ({
-
-})
-
-const mapDispatchToProps = dispatch =>
-    bindActionCreators({}, dispatch);
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(BuyFrame);

@@ -1,14 +1,16 @@
 import { useEffect } from "react";
-import { connect } from "react-redux";
-import { Link, withRouter } from "react-router-dom"
-import { bindActionCreators } from "redux";
 import { BreadcumbNav, SelectionCategory } from "./styles";
 import { carregaCategorias } from '@actions/categorias';
+import { useDispatch, useSelector } from "react-redux";
+import Link from 'next/link';
 
-function BreadCumbsSelector_({ draftProduct, carregaCategorias, categories, changeBreadcumb }) {
+export function BreadcumbsSelector({ draftProduct,  changeBreadcumb }) {
+
+    const categories = useSelector(rootState => rootState.categories.data);
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        carregaCategorias();
+        dispatch(carregaCategorias());
     }, [])
 
     let categoriesOfThisProduct = draftProduct.categories;
@@ -54,19 +56,10 @@ function BreadCumbsSelector_({ draftProduct, carregaCategorias, categories, chan
     return (
         <BreadcumbNav aria-label="breadcrumb">
             <ol>
-                <li><Link to='/SearchProducts'>Todos</Link></li>
+                <li><Link href='/SearchProducts'>Todos</Link></li>
                 {CategoriesSelectors}
             </ol>
         </BreadcumbNav>
     )
 }
 
-const mapStateToProps = store => ({
-    categories: store.categories.data,
-})
-
-const mapDispatchToProps = dispatch =>
-    bindActionCreators({ carregaCategorias }, dispatch);
-
-
-export const BreadcumbsSelector = connect(mapStateToProps, mapDispatchToProps)(withRouter(BreadCumbsSelector_));

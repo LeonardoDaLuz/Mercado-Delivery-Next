@@ -18,7 +18,7 @@ function BreadCumbs() {
 
     const links = path.map((item, index) => {
         let newLink = '/search/'+path.slice(0, index + 1).join('/');
-        return "/" + newLink;
+        return newLink;
     })
 
     var breadLis = path.map(function (cat, index) {        
