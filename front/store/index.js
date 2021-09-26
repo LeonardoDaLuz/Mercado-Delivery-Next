@@ -1,17 +1,24 @@
-import { applyMiddleware, createStore } from 'redux';
 import { createWrapper } from "next-redux-wrapper";
-import { composeWithDevTools } from "redux-devtools-extension/developmentOnly";
-import rootReducer from './reducers';
-import thunk from 'redux-thunk';
 import { configureStore } from '@reduxjs/toolkit'
+import products from './slices/productsSlice';
+import product from './slices/productSlice';
+import carrinho from './slices/chartSlice';
+import categories from './slices/categoriesSlice';
+import carousel from './slices/carouselSlice';
 
 const makeStore = () => {
 
-    const store = configureStore({ reducer: rootReducer });
-    
-   // const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
-  
+    const store = configureStore({
+        reducer: {
+            products,
+            product,
+            carrinho,
+            categories,
+            carousel
+        }
+    });
+
     return store;
 };
-  
+
 export const storeWrapper = createWrapper(makeStore, { debug: false });
