@@ -5,7 +5,7 @@ import { colorTheme } from '../../../theme';
 import { DescricaoPgProduto, SaveOrDiscard } from './styles';
 //import Editor from ;
 import { useEffect, useLayoutEffect, useRef } from 'react';
-import { editarQuantidadeDoProdutoAoCarrinho } from '../../../store/actions/carrinho';
+import { editarQuantidadeDoProdutoAoCarrinho } from '/store/slices/chartSlice';
 import Script from 'next/script';
 
 export const ProductDescription = ({ product, handleChanges, draftStatus, discardChanges, draftProduct }) => {

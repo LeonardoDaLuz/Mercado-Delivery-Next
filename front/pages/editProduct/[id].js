@@ -6,8 +6,8 @@ import { PhotoFrame } from '/components/EditProduct/PhotoFrame';
 import BuyFrame from '/components/EditProduct/BuyFrame';
 import { ProductDescription } from '/components/EditProduct/ProductDescription';
 //Others
-import { loadProduct, updateProduct } from '@actions/product'
-import { resetProductList } from '../../store/actions/products';
+import { loadProduct, updateProduct } from '/store/slices/productSlice'
+import { resetProductList } from '/store/slices/productsSlice.js';
 import produce from 'immer';
 import { useFormik } from 'formik';
 import { nestedPropertySeletor } from '../../utils/nestedPropertySelector';

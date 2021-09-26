@@ -1,5 +1,5 @@
 import react, { useEffect } from 'react';
-import { loadCategories } from '../../../store/actions/categorias';
+import { loadCategories } from '/store/slices/categoriesSlice';
 import Breadcumbs from "./Breadcumb";
 import { CategoriasAside, FaixaDePrecoForm, ListaCategorias, SidebarBuscaContainer } from './styles';
 import { useDispatch, useSelector } from 'react-redux';

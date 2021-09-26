@@ -3,14 +3,17 @@ import React, { useEffect, useRef } from "react";
 import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { connect } from "react-redux";
-import { carregarImagensCarousel } from "@actions/carousel";
+import { connect, useDispatch, useSelector } from "react-redux";
+import { carregarImagensCarousel } from "store/slices/carouselSlice"; 
 import { bindActionCreators } from "redux";
 
-function Caroulsel_({ carousel, carregarImagensCarousel, teste }) {
+function Caroulsel() {
+
+    const carousel = useSelector(rootState => rootState.carousel);
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        carregarImagensCarousel();
+        dispatch(carregarImagensCarousel());
     }, [])
 
    // console.log(carousel);
@@ -34,16 +37,4 @@ function Caroulsel_({ carousel, carregarImagensCarousel, teste }) {
 }
 
 
-const mapStateToProps = (store) => ({
-    carousel: store.carousel
-})
-
-const mapDispatchToProps = (dispatch) =>
-    bindActionCreators({ carregarImagensCarousel }, dispatch)
-
-export async function getStaticProps(context) {
-    return {
-        props: { teste: 'leo'}
-    }
-}
-export const Caroulsel = connect(mapStateToProps, mapDispatchToProps)(Caroulsel_);
+export default Caroulsel;

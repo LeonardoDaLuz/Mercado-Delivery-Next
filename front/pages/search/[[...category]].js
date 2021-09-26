@@ -7,7 +7,7 @@ import { storeWrapper } from 'store';
 import { carregarImagensCarousel } from 'store/actions/carousel';
 //import styles from '../styles/Home.module.css'
 import styled from 'styled-components'
-import { loadMoreProducts } from '@actions/products';
+import { loadMoreProducts } from '/store/slices/productsSlice';
 import DefaultHeaderAndFooter from '../../layouts/DefaultHeaderAndFooter';
 import { useRouter } from 'next/router';
 import prettyJSONStringify from '../../utils/prettyJSONStringify';

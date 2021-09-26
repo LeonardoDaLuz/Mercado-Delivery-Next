@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Input } from '../../../globalStyleds';
 import { OrdemSelectForm } from './styles';
 import { filtraFloat } from '../../../utils/InputFilters';
-import { loadMoreProducts } from '../../../store/actions/products';
+import { loadMoreProducts } from '/store/slices/productsSlice';
 import queryObjToQueryString from '../../../utils/queryObjToQueryString';
 import { useRouter } from 'next/router';
 

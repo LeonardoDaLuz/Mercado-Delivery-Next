@@ -1,7 +1,7 @@
 import { Options_ } from "./styles";
 import { ButtonFlat } from "../../../globalStyleds";
 import { colorTheme } from "../../../theme";
-import { deleteProduct } from "../../../store/actions/product";
+import { deleteProduct } from "/store/slices/productSlice";
 import { useRouter } from "next/router";
 
 export const Options__ = ({ product, draftStatus, saveChanges, discardChanges, deleteProduct }) => {

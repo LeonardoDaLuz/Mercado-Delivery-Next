@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { BreadcumbNav } from "./styles";
-import { reloadProductList as reloadProductList } from '@actions/products';
+import { reloadProductList as reloadProductList } from '/store/slices/productsSlice';
 import { useSelector } from 'react-redux';
 import { useRouter } from "next/router";
 

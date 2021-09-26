@@ -1,14 +1,10 @@
 import { OfertasDoDiaContainer } from "./styles";
 import React, { useEffect, useRef } from "react";
-import { connect, useDispatch, useSelector } from "react-redux";
-import { carregarImagensCarousel } from "../../../store/actions/carousel";
-import { bindActionCreators } from "redux";
-import { CenterContainer } from "../../../globalStyleds";
-import { loadHome } from '@actions/home';
+import { useDispatch, useSelector } from "react-redux";
 import Slider from 'react-slick';
 import { ProductCard } from "./ProductCard";
-import { loadMoreProducts } from '@actions/products';
-import { combinePathWithQuery, combinePathWithQuery2 } from "../../../utils/combinePathWithQuery";
+import { loadMoreProducts } from '/store/slices/productsSlice';
+import { combinePathWithQuery2 } from "../../../utils/combinePathWithQuery";
 
 function ProductCarousel_({ title, path, query}) {
 

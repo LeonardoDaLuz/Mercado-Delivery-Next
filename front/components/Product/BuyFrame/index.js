@@ -4,9 +4,8 @@ import { connect, useSelector } from 'react-redux';
 import React, { useEffect } from 'react'
 
 import { BuyFrameContainer, LikeButton, ButtonIncreaseDecrease, BotaoAzul, BotaoVerde, BlocoPreco, BlocoCalcularFrete, BlocoQuantidade } from './styles';
-import { likeProduct } from '@actions/product';
-import { carregarCarrinho, editarQuantidadeDoProdutoAoCarrinho, adicionarProdutoAoCarrinho } from '@actions/carrinho';
-import {  custoTotalNoCarrinho } from '@analyzers/carrinho';
+import { likeProduct } from '/store/slices/productSlice';
+import { carregarCarrinho, editarQuantidadeDoProdutoAoCarrinho, adicionarProdutoAoCarrinho } from '/store/slices/chartSlice';
 import { Col, Row } from '../../../globalStyleds';
 
 function BuyFrame({ product, likeProduct, adicionarProdutoAoCarrinho, editarQuantidadeDoProdutoAoCarrinho }) {

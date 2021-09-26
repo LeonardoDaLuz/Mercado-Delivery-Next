@@ -9,7 +9,7 @@ import { PhotoFrame } from '/components/Product/PhotoFrame';
 import BuyFrame from '/components/Product/BuyFrame';
 import { ProductDescription } from '/components/Product/ProductDescription';
 //Others
-import { loadProduct, deleteProduct } from '@actions/product'
+import { loadProduct, deleteProduct } from '/store/slices/productSlice';
 //import './style.css';
 import { Container, Row } from '../../globalStyleds';
 import { LogRender } from '../../utils/logRender';
@@ -24,7 +24,7 @@ function Product({ match }) {
   const id = router.asPath.split('/').pop();
 
   useEffect(() => {
-   // dispatch(loadProduct(id));
+    dispatch(loadProduct(id));
   }, []);
 
   //LogRender({ produto }, "Produto");
@@ -55,7 +55,7 @@ Product.getLayout = (page) => {
 
 export const getStaticProps = storeWrapper.getStaticProps((store) => {
   return async (context) => {
-    //console.log('params: ', context.params)
+    console.log('params: ', context.params)
      await store.dispatch(loadProduct(context.params.id));
 
     return {
@@ -67,7 +67,7 @@ export const getStaticProps = storeWrapper.getStaticProps((store) => {
 export async function getStaticPaths(context) {
   return {
     paths: [
-      { params: { id: '606d5ab6a0df091220a423c3'}}
+      { params: { id: '606d1ab6a0df091220a423c3'}}
     ],
     fallback: true
   }

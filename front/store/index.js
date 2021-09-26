@@ -3,14 +3,14 @@ import { createWrapper } from "next-redux-wrapper";
 import { composeWithDevTools } from "redux-devtools-extension/developmentOnly";
 import rootReducer from './reducers';
 import thunk from 'redux-thunk';
+import { configureStore } from '@reduxjs/toolkit'
 
 const makeStore = () => {
-    // Create store
-//    const store = createStore(rootReducer, {}, compose(applyMiddleware(thunk), window.devToolsExtension ? window.devToolsExtension() : f => f));
+
+    const store = configureStore({ reducer: rootReducer });
     
-    const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
+   // const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
   
-    // Return store
     return store;
 };
   

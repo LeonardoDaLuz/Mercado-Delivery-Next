@@ -4,7 +4,7 @@ import configs from '@configs';
 import moveElementFromTo from '@utils/moveElementFromTo';
 import { ProductLink, AdicionarRemoverDoCarrinho, Price, OffPrice, ProdutoCard_, OfferTag } from './styles';
 import { Row } from '@globalStyleds';
-import { adicionarProdutoAoCarrinho } from '../../../store/actions/carrinho';
+import { adicionarProdutoAoCarrinho } from '/store/slices/chartSlice';
 
 import assets from '../../../assets';
 import { OfferTagSVG3 } from './OfferTagSvg3';

@@ -3,7 +3,7 @@ import react, { Component } from 'react';
 import Link from "next/link";
 //import './Breadcumb.css';
 import { BreadcumbList } from './styles';
-import { reloadProductList } from '@actions/products';
+import { reloadProductList } from '/store/slices/productsSlice';
 import { bindActionCreators } from 'redux';
 import queryObjToQueryString from '../../../utils/queryObjToQueryString';
 import { useDispatch } from 'react-redux';

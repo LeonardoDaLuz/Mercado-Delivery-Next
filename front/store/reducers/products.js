@@ -19,6 +19,24 @@ const initialState = {
     status: 'IDLE',
     loadingStarted: null,
     mainSearch: [],
+    currentProduct: {
+        _id: '',
+        title: '',
+        categories: [],
+        description: '',
+        imgs: [],
+        price: 0,
+        stock: 1,
+        offer: {
+            time_range: {
+                starts: 0,
+                ends: 0
+            },
+            off_price: 0,
+            enabled: false
+        }
+    
+    }
 };
 
 const products = produce((draftState, action) => {

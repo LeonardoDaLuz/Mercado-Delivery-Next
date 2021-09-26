@@ -29,10 +29,10 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/categoryManager/[[...categoryPath]]": [
+    "/editProduct/[id]": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/categoryManager/[[...categoryPath]].js"
+      "static/chunks/pages/editProduct/[id].js"
     ]
   },
   "ampFirstPages": []

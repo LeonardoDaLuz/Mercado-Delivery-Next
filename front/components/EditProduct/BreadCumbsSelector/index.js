@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { BreadcumbNav, SelectionCategory } from "./styles";
-import { carregaCategorias } from '@actions/categorias';
+import { loadCategories } from '/store/slices/categoriesSlice';
 import { useDispatch, useSelector } from "react-redux";
 import Link from 'next/link';
 
@@ -10,7 +10,7 @@ export function BreadcumbsSelector({ draftProduct,  changeBreadcumb }) {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(carregaCategorias());
+        dispatch(loadCategories());
     }, [])
 
     let categoriesOfThisProduct = draftProduct.categories;

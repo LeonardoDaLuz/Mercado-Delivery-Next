@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { bindActionCreators } from 'redux';
 import assets from '/assets';
-import { carregarCarrinho } from '/store/actions/carrinho';
+import { carregarCarrinho } from '/store/slices/chartSlice';
 
 //import './style.css';
 import { Header, ContainerLg, NavbarLogo, SearchBar, Sandwich, Carrinho, Teste, MenuPrincipal } from './styles';
@@ -14,7 +14,7 @@ import BarraCategorias from '../BarraCategorias';
 import { combinePathWithQuery2 } from 'utils/combinePathWithQuery';
 
 
-function Header_({ history, location }) {
+function Header_() {
 
     const router = useRouter();
     const dispatch = useDispatch();

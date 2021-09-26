@@ -1,16 +1,16 @@
-import { Caroulsel } from 'components/Home/Carousel';
+import Caroulsel from 'components/Home/Carousel';
 import { ProductCarousel } from 'components/Home/ProductCarousel';
 import Head from 'next/head'
 import Image from 'next/image'
 import { useSelector } from 'react-redux'
 import { storeWrapper } from 'store';
-import { carregarImagensCarousel } from 'store/actions/carousel';
+import { carregarImagensCarousel } from 'store/slices/carouselSlice';
 //import styles from '../styles/Home.module.css'
 import styled from 'styled-components'
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Home from '../components/Home';
-import { loadMoreProducts } from '@actions/products';
+import { loadMoreProducts } from '/store/slices/productsSlice';
 import DefaultHeaderAndFooter from '../layouts/DefaultHeaderAndFooter';
 
 const Title = styled.h1`

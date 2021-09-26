@@ -1,11 +1,9 @@
 import { combineReducers } from 'redux';
-import products from './products';
-import product from './product';
-import carrinho from './carrinho';
-import categories from './categories';
-import carousel from './carousel';
-import account from './account';
-import home from './home';
+import products from '../slices/productsSlice';
+import product from '../slices/productSlice';
+import carrinho from '../slices/chartSlice';
+import categories from '../slices/categoriesSlice';
+import carousel from '../slices/carouselSlice';
 import offers from './offers';
 
 export default combineReducers({
@@ -14,7 +12,5 @@ export default combineReducers({
     carrinho,
     categories,
     carousel,
-    account,
-    home,
     offers
 });
