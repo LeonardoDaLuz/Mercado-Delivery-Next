@@ -5,7 +5,7 @@ import {  withRouter } from "react-router";
 import React from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { carregaCategorias } from "@actions/categorias";
+import { carregaCategorias } from "@slices/categoriesSlice";
 import { CategoryBreadcrumbs } from './CategoryBreadcrumbs';
 import { drawPropertiesAsFolder } from "./drawPropertiesAsFolder";
 

@@ -6,7 +6,7 @@ function CategoryBreadcrumbs_({ objectPath, rootPath }) {
 
     let pathArray = objectPath.split('.');
     let exitFolderClasses = pathArray.length === 0 || pathArray[0] === '' ? 'exitFolder disabled' : 'exitFolder';
-    console.log(pathArray);
+   // console.log(pathArray);
     return (
         <PathBreadcrumbs>
             <Link className={exitFolderClasses} href={'/categoryManager/' + pathArray.slice(0, pathArray.length - 1).join('/')}><a></a></Link>

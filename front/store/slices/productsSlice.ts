@@ -62,13 +62,19 @@ export const productsSlice = createSlice({
             state.status = "LOADING";
         },
         loadMoreProductsSuccess: (state: ProductsState, action: PayloadAction<PayloadType>) => {
-            const currentKey = combinePathWithQuery2(action.payload.path, action.payload.query);
+            const currentKey = combinePathWithQuery2(action.payload.path!, action.payload.query!);
+
+            let previousProductList: Product[] = [];
 
             const search = state.searchs[currentKey];
-            let previousProductList = search.found;
+            if (search)
+                previousProductList = search.found || [];
 
-            previousProductList = previousProductList || [];
-            search.found = previousProductList.concat(action.payload.data || []);
+            state.searchs[currentKey] = {
+                url: action.payload.url!,
+                found: previousProductList.concat(action.payload.data || [])
+
+            }
             state.status = 'SUCCESS';
 
         },
@@ -115,7 +121,7 @@ export const loadMoreProducts = (path: string, query: ParsedUrlQuery, quantity: 
             const data = await response.json();
             dispatch(loadMoreProductsSuccess({ data, path, query, url }));
         } catch (err: any) {
-            dispatch(loadMoreProductsFailure({ error: err.message, status: response.status, url }));
+            dispatch(loadMoreProductsFailure({ error: { message: err.message, stack: err.stack, filename: err.fileName, lineNumber: err.lineNumber }, status: response.status, url }));
         }
     }
 }

@@ -17,6 +17,7 @@ import ProductCard from '../../components/Search/ProductCard';
 import { LoadingMessage } from '../../components/Search/styles';
 import { AppState } from 'store';
 import { GetStaticPaths } from 'next';
+import { loadCategories } from '@slices/categoriesSlice';
 
 
 
@@ -46,9 +47,9 @@ function Search() {
 
   /* ------  */
 
-  const categoryPathObj = router.query['category'] as string[];
+  const categoryArrayPath = router.query['category'] as string[];
 
-  let categoryPathString = categoryPathObj ? '/' + categoryPathObj.join('/') : '';
+  let categoryPathString = categoryArrayPath ? '/' + categoryArrayPath.join('/') : '';
 
   const { products, status } = useSelector((rootState: AppState) => ({
     products: rootState.products.searchs[combinePathWithQuery2(categoryPathString, query)]?.found || [],
@@ -136,22 +137,20 @@ Search.getLayout = (page: ReactElement) => {
   )
 }
 
-export const getStaticProps = storeWrapper.getStaticProps((store) => {
+export const getServerSideProps = storeWrapper.getServerSideProps((store) => {
   return async (context) => {
 
+    const categoryArrayPath = context.query['category'] as string[];
+
+    let categoryPathString = categoryArrayPath ? '/' + categoryArrayPath.join('/') : '';
+    
+    await store.dispatch(loadMoreProducts(categoryPathString, context.query, 36)); //Aqui, o location.
+    await store.dispatch(loadCategories());
     return {
       props: {}, // will be passed to the page component as props
     }
   }
 })
-
-export const getStaticPaths: GetStaticPaths = async (context) => {
-  return {
-    paths: [
-    ],
-    fallback: 'blocking'
-  }
-}
 
 
 export default Search

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ButtonFlat, CenterContainer } from '../../globalStyleds';
 import { DeleteImage, GerenciarImagensCarousel, ImgCardLi, LoadIndicator } from './styles';
-import { carregarImagensCarousel, uploadImagensCarousel, removeImageCarousel } from '@actions/carousel'
+import { carregarImagensCarousel, uploadImagensCarousel, removeImageCarousel } from '@slices/carouselSlice'
 import configs from "@configs";
 
 function CarouselManager_({ carousel, carregarImagensCarousel, uploadImagensCarousel, removeImageCarousel }) {

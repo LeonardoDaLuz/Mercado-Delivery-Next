@@ -2,7 +2,7 @@ import DefaultHeaderAndFooter from '/layouts/DefaultHeaderAndFooter';
 import { useEffect, useState } from 'react';
 import { ButtonFlat, CenterContainer } from '/globalStyleds';
 import { DeleteImage, GerenciarImagensCarousel, ImgCardLi, LoadIndicator } from '/components/CarouselManager/styles';
-import { carregarImagensCarousel, uploadImagensCarousel, removeImageCarousel } from '@actions/carousel'
+import { carregarImagensCarousel, uploadImagensCarousel, removeImageCarousel } from '@slices/carouselSlice'
 import configs from "@configs";
 import { useDispatch, useSelector } from 'react-redux';
 

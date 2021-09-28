@@ -11,7 +11,7 @@ import { ParsedUrlQuery } from 'querystring';
 function ProductCarousel_({ title, path, query }: { title: string, path: string, query: ParsedUrlQuery }) {
 
     const dispatch = useDispatch();
-    const produtos = useSelector((rootState: AppState) => rootState.products.searchs[combinePathWithQuery2(path, query)].found || []);
+    const produtos = useSelector((rootState: AppState) => rootState.products.searchs[combinePathWithQuery2(path, query)]?.found || []);
 
     useEffect(() => {
         dispatch(loadMoreProducts(path, query, 12));
@@ -35,6 +35,7 @@ function ProductCarousel_({ title, path, query }: { title: string, path: string,
     return (
 
         <OfertasDoDiaContainer>
+          
             <h2>{title}</h2>
             <Slider {...settings}>
                 {produtos.map((product, index) =>
