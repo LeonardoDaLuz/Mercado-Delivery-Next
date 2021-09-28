@@ -19,13 +19,15 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "@configs": ["/configs"],
-      "@assets": ["/assets"],
-      "@actions/*": ["/store/actions/*"],
-      "@analyzers/*": ["/store/analyzers/*"],
-      "@globalStyleds": ["globalStyleds"],
-      "@utils/*": ["/utils/*"],
-      "@colorTheme": ["/theme"]
+      "@configs": ["./configs"],
+      "@assets": ["./assets"],
+      "@actions/*": ["./store/actions/*"],
+      "@analyzers/*": ["./store/analyzers/*"],
+      "@globalStyleds": ["./globalStyleds"],
+      "@utils/*": ["./utils/*"],
+      "@colorTheme": ["./theme"],
+      "@store": ["./store"],
+      "@slices/*": ["./store/slices/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/index.js", "pages/index.js", "pages/_app.js"],

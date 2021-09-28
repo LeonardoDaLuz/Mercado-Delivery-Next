@@ -1,4 +1,4 @@
-export function quantosProdutosTemNoCarrinho(carrinho) {
+export function quantosProdutosTemNoCarrinho(carrinho: any) {
 
     let qty = 0;
     for (var key in carrinho.produtos) {
@@ -7,7 +7,7 @@ export function quantosProdutosTemNoCarrinho(carrinho) {
     return qty;
 }
 
-export function custoTotalNoCarrinho(carrinho) {
+export function custoTotalNoCarrinho(carrinho: any) {
     
     let custo = 0;
 
@@ -18,7 +18,7 @@ export function custoTotalNoCarrinho(carrinho) {
     return custo.toFixed(2);
 }
 
-export function howManyOfTheseWereAddedToTheCart(carrinho, id) {
+export function howManyOfTheseWereAddedToTheCart(carrinho: any, id: string) {
 
     if(carrinho===undefined)
         return 0;

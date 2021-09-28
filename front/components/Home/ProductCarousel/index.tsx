@@ -3,20 +3,20 @@ import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Slider from 'react-slick';
 import { ProductCard } from "./ProductCard";
-import { loadMoreProducts } from '/store/slices/productsSlice';
-import { combinePathWithQuery2 } from "../../../utils/combinePathWithQuery";
+import { loadMoreProducts } from '@slices/productsSlice';
+import { combinePathWithQuery2 } from "@utils/combinePathWithQuery";
+import { AppState } from "@store";
+import { ParsedUrlQuery } from 'querystring';
 
-function ProductCarousel_({ title, path, query}) {
+function ProductCarousel_({ title, path, query }: { title: string, path: string, query: ParsedUrlQuery }) {
 
     const dispatch = useDispatch();
-    const allProducts = useSelector(rootState => rootState.products);
+    const produtos = useSelector((rootState: AppState) => rootState.products.searchs[combinePathWithQuery2(path, query)].found || []);
 
     useEffect(() => {
         dispatch(loadMoreProducts(path, query, 12));
     }, [])
 
-    let produtos = allProducts[combinePathWithQuery2(path, query)];
-    produtos = produtos === undefined ? [] : produtos;
 
     if (produtos.length < 3)
         return <></>

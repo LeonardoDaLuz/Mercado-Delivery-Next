@@ -1,26 +1,27 @@
-import { Component } from 'react';
+import React, { ChangeEvent, Component, MouseEventHandler } from 'react';
 import Link from "next/link";
 import configs from '@configs';
 import moveElementFromTo from '@utils/moveElementFromTo';
 import { ProductLink, AdicionarRemoverDoCarrinho, Price, OffPrice, ProdutoCard_, OfferTag } from './styles';
 import { Row } from '@globalStyleds';
-import { adicionarProdutoAoCarrinho } from '/store/slices/chartSlice';
-
-import assets from '../../../assets';
+import { adicionarProdutoAoCarrinho } from '@slices/chartSlice';
+import assets from '@assets';
 import { OfferTagSVG3 } from './OfferTagSvg3';
-import { howManyOfTheseWereAddedToTheCart } from '../../../utils/chartUtility';
+import { howManyOfTheseWereAddedToTheCart } from '@utils/chartUtility';
 import { useDispatch, useSelector } from 'react-redux';
+import { Product } from 'store/slices/productsSlice';
+import { AppState } from 'store';
 
-function ProdutoCard({ product, index }) {
+function ProdutoCard({ product, key }: { product: Product, key: number }) {
 
-    const carrinho = useSelector(rootState => rootState.carrinho);
+    const carrinho = useSelector((rootState: AppState) => rootState.carrinho);
     const dispatch = useDispatch();
 
     let addedQuantity = howManyOfTheseWereAddedToTheCart(carrinho, product._id);
 
-    function RemoverDoCarrinho(e) { dispatch(adicionarProdutoAoCarrinho(product._id, -1)); animarAdicao(e, -1) }
+    function RemoverDoCarrinho(e: React.MouseEvent<HTMLElement>):void { dispatch(adicionarProdutoAoCarrinho(product._id, -1)); animarAdicao(e, -1) }
 
-    function AdicionarAoCarrinho(e) { dispatch(adicionarProdutoAoCarrinho(product._id, 1)); animarAdicao(e) }
+    function AdicionarAoCarrinho(e: React.MouseEvent<HTMLElement>):void { dispatch(adicionarProdutoAoCarrinho(product._id, 1)); animarAdicao(e) }
 
     let offerEnabled = product.offer.enabled;
 
@@ -38,13 +39,13 @@ function ProdutoCard({ product, index }) {
 
 
     return (
-        <ProdutoCard_ key={index}>
+        <ProdutoCard_ key={key}>
             <Link href={'/product/' + product._id} passHref>
                 <ProductLink>
                     <img src={configs.imgsPath + product.imgs[0]} />
                 </ProductLink>
             </Link>
-          <h5>{product.title}</h5>
+            <h5>{product.title}</h5>
             {offerEnabled &&
                 <Row>
                     {product.offer.enabled &&
@@ -72,8 +73,8 @@ function ProdutoCard({ product, index }) {
     );
 }
 
-async function animarAdicao(e, dir = 1) {
-    let img = e.target.parentElement.parentElement.querySelector("img");
+async function animarAdicao(e: React.MouseEvent<HTMLElement>, dir = 1) {
+    let img = (e.target as HTMLElement).parentElement!.parentElement!.querySelector("img");
     let carrinho = document.querySelector("#carrinho");
     moveElementFromTo(img, img, carrinho, dir);
 }
