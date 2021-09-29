@@ -1,12 +1,14 @@
+
+
+
 class ChartController {
 
     static async getChart(req, resp) {
-        let conta = 0;
-        conta = parseInt(conta);
 
-        let carrinho = await global.conn.collection("carrinhos").findOne({ conta });
+        let carrinho = await global.conn.collection("carrinhos").findOne({ account_id: req.account_id });
 
         await ChartController.loadCarrinhoProductDatas(carrinho);
+        
         resp.json(carrinho);
     }
 
@@ -30,7 +32,7 @@ class ChartController {
 
         let conta = 0;
 
-        let carrinho = await global.conn.collection("carrinhos").findOne({ conta });
+        let carrinho = await global.conn.collection("carrinhos").findOne({ account_id: req.account_id });
 
         if (carrinho == null) {
             resp.status(400).json({ error: 'Chart not found' });
@@ -48,7 +50,7 @@ class ChartController {
         if (produtos[id].quantidade < 1)
             delete produtos[id];
 
-        let result = await global.conn.collection("carrinhos").updateOne({ conta: conta },
+        let result = await global.conn.collection("carrinhos").updateOne({ account_id: req.account_id },
             {
                 $set: { produtos: produtos }
             }
@@ -76,7 +78,7 @@ class ChartController {
         if (isNaN(quantidade))
             quantidade = 0;
 
-        let carrinho = await global.conn.collection("carrinhos").findOne({ conta });
+        let carrinho = await global.conn.collection("carrinhos").findOne({ account_id: req.account_id });
 
         if (carrinho == null) {
             resp.status(400).send('Chart not found');
@@ -91,7 +93,7 @@ class ChartController {
             delete produtos[objId];
         }
 
-        let dbResp = await global.conn.collection("carrinhos").updateOne({ conta },
+        let dbResp = await global.conn.collection("carrinhos").updateOne({ account_id: req.account_id },
             {
                 $set: { produtos: produtos }
             }

@@ -98,7 +98,7 @@ export default productSlice.reducer;
 
 /* THUNKS: */
 
-export const loadProduct = (id: string, callback: Function): AppThunk => {
+export const loadProduct = (id: string): AppThunk => {
 
     return async dispatch => {
 
@@ -123,7 +123,7 @@ export const loadProduct = (id: string, callback: Function): AppThunk => {
 export const likeProduct = (id: string): AppThunk => {
 
     return dispatch => {
-        
+
         const conta = 0;
         const url = `http://localhost:3001/like/${conta}/${id}`;
         dispatch(likeProductStart({ url }));

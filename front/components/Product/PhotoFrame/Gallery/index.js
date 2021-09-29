@@ -6,7 +6,7 @@ import { DeleteImage } from './style';
 import { uploadImages } from '../../../../utils/uploadImagesToServer';
 import assets from '../../../../assets';
 
-export function Gallery({ img, imgs, selectedImageId, setSelectedImageId, setShowLightboxState, pushImages, removeImage }) {
+export function Gallery({  imgs, selectedImageId, setSelectedImageId, setShowLightboxState, pushImages, removeImage }) {
 
 
     const SelectedImageUrl = imgs[selectedImageId];

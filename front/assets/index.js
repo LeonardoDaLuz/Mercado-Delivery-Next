@@ -16,6 +16,7 @@ import exitFolder from './svg/exitFolder.svg';
 import editIcon from './svg/editIcon.svg';
 import saveIcon from './svg/saveIcon.svg';
 import searchIcon from './svg/searchIcon.svg';
+import update_icon from './svg/update_icon.svg';
 import mercado_delivery_monochrome_white_logo from './svg/mercado_delivery_monochrome_white_logo.svg';
 
 const assets = {
@@ -37,7 +38,8 @@ const assets = {
     exitFolder,
     editIcon,
     saveIcon,
-    searchIcon
+    searchIcon,
+    update_icon
 }
 
 Object.keys(assets).forEach(key => { //workaround porque o next por algum motivo importa com .src, diferente do react q importa o string do link direto.

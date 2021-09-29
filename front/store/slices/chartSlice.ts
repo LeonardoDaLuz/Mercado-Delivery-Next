@@ -55,20 +55,23 @@ export const chartSlice = createSlice({
         },
         addProductInChartFailure: (state, action: PayloadAction<ChartPayload>) => {
         },
+        resetChart: (state) => {
+            state.produtos = {}
+        }
 
 
     },
-   /* extraReducers: {
-        [HYDRATE]: (state, action) => {
-            return {
-                ...state,
-                ...action.payload.carrinho,
-            };
-        },
-    },*/
+    /* extraReducers: {
+         [HYDRATE]: (state, action) => {
+             return {
+                 ...state,
+                 ...action.payload.carrinho,
+             };
+         },
+     },*/
 })
 
-export const { loadChartStart, loadChartSuccess, loadChartFailure, changeChartProductQuantityStart, changeChartProductQuantitySuccess, changeChartProductQuantityFailure, addProductInChartStart, addProductInChartSuccess, addProductInChartFailure } = chartSlice.actions
+export const { loadChartStart, loadChartSuccess, loadChartFailure, changeChartProductQuantityStart, changeChartProductQuantitySuccess, changeChartProductQuantityFailure, addProductInChartStart, addProductInChartSuccess, addProductInChartFailure, resetChart } = chartSlice.actions
 
 export default chartSlice.reducer;
 
@@ -76,15 +79,21 @@ export default chartSlice.reducer;
 /* THUNKS: */
 
 
-export const carregarCarrinho = (id: string, quantidade: number): AppThunk => {
+export const carregarCarrinho = (token: string): AppThunk => {
 
-    return async dispatch => {
+    return async (dispatch) => {
 
         const url = `http://localhost:3001/carrinho/`;
 
         dispatch(loadChartStart({ url }));
 
-        let response = await fetch(url, { method: 'GET' });
+        let response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'x-access-token': token
+            }
+
+        });
 
         if (response.ok) {
             let data = await response.json();
@@ -100,12 +109,19 @@ export const carregarCarrinho = (id: string, quantidade: number): AppThunk => {
 
 export const adicionarProdutoAoCarrinho = (id: string, quantidade: number): AppThunk => {
 
-    return async dispatch => {
+    return async (dispatch, getState) => {
         const url = `http://localhost:3001/carrinho/addproduto/${id}/${quantidade}`;
 
         dispatch(addProductInChartStart({ url }));
 
-        let response = await fetch(url, { method: 'POST' });
+        const { user } = getState();
+
+        let response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'x-access-token': user.token
+            }
+        });
         if (response.ok) {
             let data = await response.json();
             dispatch(addProductInChartSuccess({ chart: data, url }));
@@ -131,16 +147,23 @@ export const editarQuantidadeDoProdutoAoCarrinho = (id: string, quantidade: numb
             carrinhoData.produtos[id] = {
                 quantidade: quantidade,
                 preco: 25,
-               
+
             }
         else
             carrinhoData.produtos[id].quantidade = quantidade;
-        
+
         const url = `http://localhost:3001/carrinho/modificarQuantidadeProduto/${id}/${quantidade}`;
 
         dispatch(changeChartProductQuantityStart({ url }));
 
-        let response = await fetch(url, { method: 'POST' });
+        const { user } = getState();
+
+        let response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'x-access-token': user.token
+            }
+        });
         if (response.ok) {
             let data = await response.json();
             dispatch(changeChartProductQuantitySuccess({ chart: data, url }));

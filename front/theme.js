@@ -3,7 +3,7 @@ import Color from 'color';
 let _colorTheme = {
     contentBackground: 'white',
     contentText: 'black',
-    siteBackground: 'rgb(244, 244, 244)',
+    siteBackground: 'hsl(120, 86%, 23.7%)',
     primary: '#0dad0d',
     primaryText:  'white',
     secondary: '#2457D0',

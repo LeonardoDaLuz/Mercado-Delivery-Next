@@ -1,3 +1,4 @@
+require("dotenv-safe").config();
 var env = process.argv[2] || 'dev';
 require('express-async-errors');
 var express = require('express');
@@ -7,6 +8,7 @@ const { NetworkAuthenticationRequire } = require('http-errors');
 var consign = require('consign');
 const waitForSeconds = require('./utilities/waitForSeconds');
 
+console.log('process.env.SECRET',process.env.SECRET)
 
 main();
 

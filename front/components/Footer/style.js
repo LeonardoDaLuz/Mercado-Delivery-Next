@@ -7,7 +7,7 @@ export const Footer_ = styled.footer`
     background-color: rgb(13, 173, 13);
     color: white;
     padding-top: 25px;
-    margin-top: 30px;
+
 
     img {
         padding: 25px;

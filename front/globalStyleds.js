@@ -1,5 +1,6 @@
-import styled, { createGlobalStyle } from 'styled-components';
+import styled, { createGlobalStyle, keyframes } from 'styled-components';
 import { colorTheme } from './theme';
+import assets from '@assets';
 
 export const GlobalStyle = createGlobalStyle`
     body {
@@ -17,6 +18,11 @@ export const GlobalStyle = createGlobalStyle`
 
     *, *::before, *::after {
         box-sizing: border-box;
+    }
+
+    body>div>main {
+        background-color: rgb(244, 244, 244);
+        padding-bottom: 30px;
     }
 
     .noscroll {
@@ -370,4 +376,29 @@ export const CloseButton = styled.button`
 export const Center = styled.div`
     margin: 0 auto;
     width: fit-content;
+`;
+
+const spin = keyframes`
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+`;
+
+
+export const LoaderWheel = styled.div`
+    display: inline-block;
+    vertical-align: middle;
+    width: 45px;
+    height: 45px;
+    background: transparent url(${assets.update_icon}) no-repeat center center;
+    background-size: contain;
+    animation: ${spin} 0.5s linear infinite;
+`;
+
+export const FadeBackground = styled.div`
+    width: 100%;
+    height: 100%;
+    background-color: red;
+    position: absolute;
+    background-color: rgb(0,0,0,0.5);
+
 `;

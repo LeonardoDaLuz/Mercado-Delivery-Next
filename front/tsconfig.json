@@ -7,7 +7,7 @@
       "esnext"
     ],
     "allowJs": true,
-    "skipLibCheck": true,
+    "skipLibCheck": false,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
@@ -27,9 +27,12 @@
       "@utils/*": ["./utils/*"],
       "@colorTheme": ["./theme"],
       "@store": ["./store"],
-      "@slices/*": ["./store/slices/*"]
+      "@slices/*": ["./store/slices/*"],
+
+      "@components/*": ["./components/*"],
+      "@*": ["./*"],
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/index.js", "pages/index.js", "pages/_app.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/index.ts", "pages/index.ts", "pages/_app.ts"],
   "exclude": ["node_modules"]
 }

@@ -97,7 +97,7 @@ export default carouselSlice.reducer;
 
 /* THUNKS: */
 
-export const carregarImagensCarousel = (id: string, quantidade: string): AppThunk => {
+export const carregarImagensCarousel = (): AppThunk => {
     return async dispatch => {
 
         const url = 'http://localhost:3001/carousel/';

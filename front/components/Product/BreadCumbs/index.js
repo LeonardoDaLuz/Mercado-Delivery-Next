@@ -5,9 +5,9 @@ import { useSelector } from 'react-redux';
 import { useRouter } from "next/router";
 
 
-function BreadCumbs_() {
+export function BreadCumbs({ product }) {
 
-    const product = useSelector(rootState => rootState.product);
+  //  const product = useSelector(rootState => rootState.product);
 
     let categories = product.categories;
 
@@ -18,7 +18,7 @@ function BreadCumbs_() {
     var CategoriesList = categories.map(function (category, index) {
         let sliced = categories.slice(0, index + 1);
 
-        let path = '/SearchProducts/' + sliced.join('/');
+        let path = '/search/' + sliced.join('/');
         return (
             <li key={index}>
                 <Link href={path}><a>{category}</a></Link>
@@ -29,12 +29,10 @@ function BreadCumbs_() {
     return (
         <BreadcumbNav aria-label="breadcrumb">
             <ol>
-                <li><Link href='/SearchProducts/'><a>Todos</a></Link></li>
+                <li><Link href='/search/'><a>Todos</a></Link></li>
                 {CategoriesList}
             </ol>
         </BreadcumbNav>
     )
 }
 
-
-export const BreadCumbs = BreadCumbs_;
