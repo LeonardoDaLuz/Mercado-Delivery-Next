@@ -7,7 +7,7 @@ import { HYDRATE } from 'next-redux-wrapper';
 
 interface UserState {
     account_id: string,
-    status: 'LOGGED' | 'NOT_LOGGED' | 'LOGIN_FAIL' | 'LOGGING',
+    status: 'LOGGED' | 'NOT_LOGGED' | 'LOGIN_FAIL' | 'LOGGING' | 'REGISTERING' | 'REGISTER_FAIL' | 'REGISTER_SUCCESS',
     token: string,
     email: string,
 
@@ -21,7 +21,8 @@ interface UserPayload {
     status?: number,
     error?: any,
     response?: string,
-    password?: string
+    password?: string,
+    message?: string
 }
 
 const initialState: UserState = {
@@ -61,6 +62,16 @@ export const userSlice = createSlice({
             state.status = 'NOT_LOGGED';
             state.account_id = '';
         },
+        registerStart: (state, action: PayloadAction<UserPayload>) => {
+            state.status = 'REGISTERING';
+        },
+        registerSuccess: (state, action: PayloadAction<UserPayload>) => {
+            state.status = 'REGISTER_SUCCESS';
+        },
+        registerFailure: (state, action: PayloadAction<UserPayload>) => {
+            state.status = 'REGISTER_FAIL'
+
+        }
     },
     /* extraReducers: {
          [HYDRATE]: (state, action) => {
@@ -72,7 +83,7 @@ export const userSlice = createSlice({
      },*/
 })
 
-export const { loginStart, loginSuccess, loginFailure, incorrectLoginOrPassword } = userSlice.actions
+export const { loginStart, loginSuccess, loginFailure, incorrectLoginOrPassword, registerStart, registerSuccess, registerFailure } = userSlice.actions
 
 export default userSlice.reducer;
 
@@ -129,6 +140,39 @@ export const logoutThunk = (): AppThunk => {
 
         dispatch(userSlice.actions.logout());
         dispatch(resetChart());
+
+    }
+}
+
+export const registerThunk = (data: any, callBackOnSucess?: Function, callbackOnFailure?: Function, callBackOnAlreadyRegistered?: Function): AppThunk => {
+    return async dispatch => {
+
+
+        const url = "http://localhost:3001/register/";
+
+        dispatch(registerStart({ url }));
+        const response = await fetch(url, { method: "POST", body: JSON.stringify(data), headers: { "Content-Type": "application/json" } });
+
+        const text = await response.text();
+        try {
+            const responseBody = JSON.parse(text);
+            if (responseBody["register"] === true) {
+                dispatch(registerSuccess({ url, response: text }))
+                if (callBackOnSucess)
+                    callBackOnSucess();
+
+            } else {
+                dispatch(registerFailure({ url, response: text, error: "email já registrado" }))
+                if (callBackOnAlreadyRegistered)
+                    callBackOnAlreadyRegistered();
+            }
+
+        } catch (err: any) {
+            dispatch(registerFailure({ url, response: text, error: err.stack }))
+            if (callbackOnFailure)
+                callbackOnFailure();
+
+        }
 
     }
 }

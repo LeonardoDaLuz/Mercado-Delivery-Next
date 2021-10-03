@@ -6,6 +6,7 @@ export const RegisterContainer = styled.div`
     max-width: 98%;
     width: 900px;
 
+
     label, input {
         display: block;
     }
@@ -21,6 +22,11 @@ export const RegisterContainer = styled.div`
             text-align: center;
         }
 
+    }
+
+    fieldset {
+        pointer-events: ${({ disable }) => disable ? "none" : "all"};
+    opacity: ${({ disable }) => disable ? "0.5" : "1"};
     }
 `;
 
@@ -86,4 +92,20 @@ export const ErrorLabel = styled.div`
     margin-left: 5px;
 
 
+`;
+
+export const SubmissionAlert = styled.span`
+    display: block;
+    text-align: center;
+    color: red;
+`;
+
+export const RegisterSuccessContainer = styled.main`
+
+width: 800px;
+margin: 0 auto;
+min-height: 500px;
+display: flex;
+align-items: center;
+justify-content: center;
 `;

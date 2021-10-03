@@ -1,8 +1,11 @@
 import DefaultHeaderAndFooter from '@layouts/DefaultHeaderAndFooter';
 import { ReactElement, useEffect, useState } from 'react';
 import { ButtonFlat, Center, CenterContainer, LoaderWheel } from '@globalStyleds';
-import { RegisterContainer, Flex, InputBlock, RegisterButton, EnderecoFieldSet, ErrorLabel } from '../../components/Register/style';
+import { RegisterContainer, Flex, InputBlock, RegisterButton, EnderecoFieldSet, ErrorLabel, SubmissionAlert } from '@components/Register/style';
 import { useFormik, FormikProps } from "formik";
+import { useDispatch } from 'react-redux';
+import { registerThunk } from '@slices/userSlice';
+import { useRouter } from 'next/router';
 
 
 interface LoginValues {
@@ -44,6 +47,9 @@ type AllPropsAsString<T> = {
 }
 function Login() {
 
+    const dispatch = useDispatch();
+    const router = useRouter();
+    const [registerStatus, setRegisterStatus] = useState("");
 
     const validate = (values: LoginValues) => {
 
@@ -129,7 +135,15 @@ function Login() {
                 city: ''
             },
             validate,
-            onSubmit: (): void => { },
+            onSubmit: (values): void => {
+                setRegisterStatus("REGISTERING");
+                dispatch(registerThunk(
+                    values,
+                    () => router.push("/register/success"),
+                    () => setRegisterStatus("REGISTER_FAILURE"),
+                    () => setRegisterStatus("EMAIL_ALREADY_REGISTERED")
+                ))
+            },
             validateOnMount: true
         });
 
@@ -168,7 +182,7 @@ function Login() {
     }
 
     return (
-        <RegisterContainer>
+        <RegisterContainer disable={registerStatus==="REGISTERING"}>
             <form onSubmit={formik.handleSubmit}>
                 <h1>Cadastro</h1>
                 <EnderecoFieldSet>
@@ -269,21 +283,24 @@ function Login() {
                     <Flex>
                         <InputBlock>
                             <label htmlFor='password'>Senha:</label>
-                      
+
                             <input id='password' name='password' type='password' onChange={formik.handleChange} value={formik.values.password} />
                             {formik.errors['password'] && <ErrorLabel> {'  *' + formik.errors['password']}</ErrorLabel>}
                         </InputBlock>
                         <InputBlock>
                             <label htmlFor='password2'>Confirme a senha:</label>
-           
+
                             <input id='password2' name='password2' type='password' onChange={formik.handleChange} value={formik.values.password2} />
                             {formik.errors['password2'] && <ErrorLabel> {'  *' + formik.errors['password2']}</ErrorLabel>}
                         </InputBlock>
                     </Flex>
                 </EnderecoFieldSet>
+                {registerStatus === "EMAIL_ALREADY_REGISTERED" && <SubmissionAlert>Email já está registrado</SubmissionAlert>}
+                {registerStatus === "REGISTER_FAILURE" && <SubmissionAlert>Erro ao registrar</SubmissionAlert>}
+                <RegisterButton disabled={!formik.isValid} type='submit'>
+                    {registerStatus === "REGISTERING" && <LoaderWheel />}
+                    Cadastrar</RegisterButton>
 
-                <RegisterButton disabled={!formik.isValid} type='submit'>Cadastrar</RegisterButton>
-                            
             </form>
         </RegisterContainer>
     )

@@ -17,7 +17,7 @@ interface ChartPayload {
     chart?: ChartState
 }
 
-interface ProductRegister {
+export interface ProductRegister {
     quantidade: number,
     preco?: number,
     data?: Product
@@ -147,7 +147,6 @@ export const editarQuantidadeDoProdutoAoCarrinho = (id: string, quantidade: numb
             carrinhoData.produtos[id] = {
                 quantidade: quantidade,
                 preco: 25,
-
             }
         else
             carrinhoData.produtos[id].quantidade = quantidade;
