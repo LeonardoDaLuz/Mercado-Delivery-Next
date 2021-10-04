@@ -6,6 +6,7 @@ import carrinho from './slices/chartSlice';
 import categories from './slices/categoriesSlice';
 import carousel from './slices/carouselSlice';
 import user from './slices/userSlice';
+import purchases from './slices/purchasesSlice';
 
 import {createStore, AnyAction, Store, Action} from 'redux';
 
@@ -18,7 +19,8 @@ const makeStore = () => {
             carrinho,
             categories,
             carousel,
-            user
+            user,
+            purchases
         }
     });
 

@@ -1,20 +1,22 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { Product } from '@slices/productsSlice';
+import { loadPurchasesSuccess, purchaseCreated } from '@slices/purchasesSlice';
 import { AppThunk } from '@store';
 import { HYDRATE } from 'next-redux-wrapper';
 
 interface ChartState {
-    conta: number
     produtos: {
         [key: string]: ProductRegister
     },
-    status: string
 }
 
 interface ChartPayload {
     url?: string,
     status?: number,
-    chart?: ChartState
+    chart?: ChartState,
+    response?: string,
+    error?: any,
+    body?: any
 }
 
 export interface ProductRegister {
@@ -25,8 +27,6 @@ export interface ProductRegister {
 
 const initialState: ChartState = {
     produtos: {},
-    conta: -1,
-    status: 'IDLE'
 };
 
 
@@ -57,8 +57,16 @@ export const chartSlice = createSlice({
         },
         resetChart: (state) => {
             state.produtos = {}
-        }
+        },
+        confirmPurchaseStart: (state, action: PayloadAction<ChartPayload>) => {
 
+        },
+        confirmPurchasSuccess: (state, action: PayloadAction<ChartPayload>) => {
+            state.produtos = {}
+        },
+        confirmPurchaseFailure: (state, action: PayloadAction<ChartPayload>) => {
+
+        },
 
     },
     /* extraReducers: {
@@ -71,14 +79,51 @@ export const chartSlice = createSlice({
      },*/
 })
 
-export const { loadChartStart, loadChartSuccess, loadChartFailure, changeChartProductQuantityStart, changeChartProductQuantitySuccess, changeChartProductQuantityFailure, addProductInChartStart, addProductInChartSuccess, addProductInChartFailure, resetChart } = chartSlice.actions
+export const { loadChartStart, loadChartSuccess, loadChartFailure, changeChartProductQuantityStart, changeChartProductQuantitySuccess, changeChartProductQuantityFailure, addProductInChartStart, addProductInChartSuccess, addProductInChartFailure, resetChart, confirmPurchaseStart, confirmPurchasSuccess, confirmPurchaseFailure } = chartSlice.actions
 
 export default chartSlice.reducer;
 
 
 /* THUNKS: */
 
+export const confirmPurchase = (chart: ChartState, callBackOnSuccess: Function): AppThunk => {
+    return async (dispatch, getState) => {
 
+        const url = `http://localhost:3001/chart/confirm_purchase`;
+        const body = JSON.stringify(chart);
+
+        dispatch(confirmPurchaseStart({ url, body }));
+        const user = getState().user;
+
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-access-token': user.token
+            },
+            body
+        })
+
+        const text = await response.text();
+
+        try {
+            const data = await JSON.parse(text);
+
+            console.log('text', text);
+            console.log('data', data.purchase);
+            if (data['status'] === 'ok') {
+                dispatch(confirmPurchasSuccess({ url, response: data }))
+                dispatch(purchaseCreated({ url, purchase: data.purchase }))
+                if (callBackOnSuccess)
+                    callBackOnSuccess();
+            } else {
+                dispatch(confirmPurchaseFailure({ error: "stranger response", status: response.status, url, response: text }));
+            }
+        } catch (err: any) {
+            dispatch(confirmPurchaseFailure({ error: err.stack, status: response.status, url, response: text }));
+        }
+    }
+}
 export const carregarCarrinho = (token: string): AppThunk => {
 
     return async (dispatch) => {

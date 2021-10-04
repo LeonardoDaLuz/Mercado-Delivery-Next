@@ -8,7 +8,7 @@ class ChartController {
         let carrinho = await global.conn.collection("carrinhos").findOne({ account_id: req.account_id });
 
         await ChartController.loadCarrinhoProductDatas(carrinho);
-        
+
         resp.json(carrinho);
     }
 
@@ -65,8 +65,6 @@ class ChartController {
 
     }
 
-
-
     static async modifyQuantityOnChart(req, resp) {
 
         let conta = 0;
@@ -99,8 +97,7 @@ class ChartController {
             }
         );
 
-        if (dbResp.result.nModified == 0)
-        {
+        if (dbResp.result.nModified == 0) {
             resp.status(400).send('Unable to edit product quantity in chart');
             return;
         }
@@ -108,6 +105,26 @@ class ChartController {
 
         await ChartController.loadCarrinhoProductDatas(carrinho);
         resp.json(carrinho);
+    }
+
+    static async confirmPurchase(req, res) {
+
+        console.log(req.body);
+        const purchase = req.body;
+        delete purchase['_id'];
+        purchase.account_id = req.account_id;
+
+        await ChartController.loadCarrinhoProductDatas(purchase);
+
+        const result = await global.conn.collection('purchases').insertOne(purchase);
+       // console.log('result', result);
+        if (result.result.ok === 1) {
+            res.json({ status:'ok', purchase });
+        } else {
+            res.status(500).json({ error: "error on create purchase" });
+        } 
+
+
     }
 }
 

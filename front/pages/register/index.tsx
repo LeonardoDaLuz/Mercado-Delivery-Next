@@ -6,6 +6,7 @@ import { useFormik, FormikProps } from "formik";
 import { useDispatch } from 'react-redux';
 import { registerThunk } from '@slices/userSlice';
 import { useRouter } from 'next/router';
+import { autoFillWithViaCEP, formatCEP, formatCPF, IsValidCEP, isValidCPF, isValidEmail, isValidName, maskTelephone } from '@utils/formUtils';
 
 
 interface LoginValues {
@@ -26,20 +27,6 @@ interface LoginValues {
 
 }
 
-interface ViaCEPResponseType {
-
-    cep: string,
-    logradouro: string,
-    complemento: string,
-    bairro: string,
-    localidade: string,
-    uf: string,
-    ibge: number,
-    gia: number,
-    ddd: number,
-    siafi: number
-
-}
 
 
 type AllPropsAsString<T> = {
@@ -149,38 +136,7 @@ function Login() {
 
 
 
-    async function autoFillWithViaCEP(e: React.ChangeEvent<HTMLInputElement>) {
-
-        if (IsValidCEP(e.target.value)) {
-            const url = 'https://viacep.com.br/ws/' + e.target.value + '/json/unicode/';
-            const response = await fetch(url);
-            if (response.status === 200) {
-                const responseText = await response.text();
-
-                try {
-                    const data = JSON.parse(responseText) as ViaCEPResponseType;
-
-                    if (data.logradouro) {
-
-                        console.log("deu certo", data);
-
-                        formik.setFieldValue('street', data.logradouro);
-                        formik.setFieldValue('district', data.bairro);
-                        formik.setFieldValue('city', data.localidade);
-
-                    } else {
-                        console.error('Resposta inesperada para ' + url, responseText);
-                    }
-
-                } catch (err) {
-                    console.error('JSON: Não foi possível parsear a resposta da rota ' + url)
-                }
-            } else {
-                console.error('Bad request para ' + url)
-            }
-        }
-    }
-
+    
     return (
         <RegisterContainer disable={registerStatus==="REGISTERING"}>
             <form onSubmit={formik.handleSubmit}>
@@ -240,7 +196,7 @@ function Login() {
                             {formik.errors['cep'] && <ErrorLabel> {'  *' + formik.errors['cep']}</ErrorLabel>}
                             <input id='cep' name='cep' type='text' onChange={(e) => {
                                 e.target.value = formatCEP(e.target.value);
-                                autoFillWithViaCEP(e);
+                                autoFillWithViaCEP(e, formik);
                                 formik.handleChange(e)
                             }
 
@@ -316,147 +272,3 @@ Login.getLayout = (page: ReactElement) => {
 }
 
 export default Login;
-
-
-function isValidCPF(strCPF: string) {
-
-    if (!strCPF)
-        return false;
-
-    strCPF = strCPF.replace(/[^\d]/g, ""); //remove caracteres repetidos
-
-    let Soma;
-    let Resto;
-    Soma = 0;
-    if (strCPF == "00000000000") return false;
-
-    for (let i = 1; i <= 9; i++) Soma = Soma + parseInt(strCPF.substring(i - 1, i)) * (11 - i);
-    Resto = (Soma * 10) % 11;
-
-    if ((Resto == 10) || (Resto == 11)) Resto = 0;
-    if (Resto != parseInt(strCPF.substring(9, 10))) return false;
-
-    Soma = 0;
-    for (let i = 1; i <= 10; i++) Soma = Soma + parseInt(strCPF.substring(i - 1, i)) * (12 - i);
-    Resto = (Soma * 10) % 11;
-
-    if ((Resto == 10) || (Resto == 11)) Resto = 0;
-    if (Resto != parseInt(strCPF.substring(10, 11))) return false;
-    return true;
-}
-
-function isValidEmail(email: string) {
-    return /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)
-}
-
-
-function IsValidCEP(strCEP: string) {
-
-    const objER = /^\d{5}-\d{3}$/;
-
-    if (strCEP.length > 0) {
-        if (objER.test(strCEP.replace(/(\d{5})(\d{3})/, "$1-$2")))
-            return true;
-        else
-            return false;
-    }
-    else
-        return false;
-}
-
-function isValidName(name: string) {
-    const pattern = /[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]{2,99}\s[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]{2,99}/gi;
-    return pattern.test(name);
-
-}
-
-
-export function formatCPF(cpf: string) {
-    cpf = cpf.replace(/[^\d]/g, ""); //remove caracteres especiais e letras
-
-    cpf = cpf.substr(0, 11);
-
-    if (cpf.length < 7 && cpf.length > 3) {
-        return cpf.replace(/(\d{3})/, "$1.");
-    }
-    if (cpf.length < 10 && cpf.length > 6) {
-        return cpf.replace(/(\d{3})(\d{3})/, "$1.$2.");
-    }
-    if (cpf.length > 9) {
-
-        return cpf.replace(/(\d{3})(\d{3})(\d{3})/, "$1.$2.$3-");
-    }
-
-    return cpf;
-}
-
-export function maskTelephone(e: { target: HTMLInputElement }) {
-
-    let onlyNumbers = e.target.value.replace(/[^\d]/g, "");//remove caracteres especiais e letras
-
-    let cursorStart = e.target.selectionStart;
-
-    if (cursorStart === 1) {
-        if (onlyNumbers.length === 1)
-            cursorStart++;
-    }
-
-    if (cursorStart === 4) {
-        if (onlyNumbers.length >= 3)
-            cursorStart++;
-        else
-            cursorStart--;
-    }
-
-    if (cursorStart === 10) {
-        if (onlyNumbers.length >= 8)
-            cursorStart++;
-        else
-            cursorStart--;
-    }
-
-    let maxCursorStart =
-        onlyNumbers.length > 7 ? onlyNumbers.length + 3 :
-            onlyNumbers.length > 2 ? onlyNumbers.length + 2 :
-                onlyNumbers.length + 1;
-
-    if (cursorStart! > maxCursorStart)
-        cursorStart = maxCursorStart;
-
-
-    let placeHolderArray = Array.from("(__)_____-____");
-
-    let dddArray = Array.from(onlyNumbers.substr(0, 2));
-
-    let secondGroup = Array.from(onlyNumbers.substr(2, 5));
-
-    let thirdGroup = Array.from(onlyNumbers.substr(7, 4));
-
-    placeHolderArray.splice(1, dddArray.length, ...dddArray);
-
-    placeHolderArray.splice(4, secondGroup.length, ...secondGroup);
-
-    placeHolderArray.splice(10, thirdGroup.length, ...thirdGroup);
-
-    e.target.value = placeHolderArray.join('');
-
-    e.target.selectionStart = cursorStart;
-    e.target.selectionEnd = cursorStart;
-
-    return e.target.value;
-}
-
-
-export function formatCEP(cpf: string) {
-
-
-
-    if (cpf === "undefined" || typeof cpf === 'undefined')
-        return "";
-    //retira os caracteres indesejados...
-    cpf = cpf.replace(/[^\d]/g, "").substring(0, 8);
-
-    //realizar a formatação...
-    return cpf.replace(/(\d{5})(\d+)/, "$1-$2");
-}
-

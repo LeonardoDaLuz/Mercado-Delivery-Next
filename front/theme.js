@@ -42,4 +42,7 @@ function createAdvancedColorThemeObject(themeObject) {
 
 _colorTheme = createAdvancedColorThemeObject(_colorTheme);
 
+let t = new Color();
+
+t.lighten(0.2)
 export const colorTheme = _colorTheme;

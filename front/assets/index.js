@@ -18,6 +18,7 @@ import saveIcon from './svg/saveIcon.svg';
 import searchIcon from './svg/searchIcon.svg';
 import update_icon from './svg/update_icon.svg';
 import mercado_delivery_monochrome_white_logo from './svg/mercado_delivery_monochrome_white_logo.svg';
+import qrcode_placeholder from './png/QRCODE.jpg';
 
 const assets = {
     heart,

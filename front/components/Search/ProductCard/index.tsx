@@ -19,9 +19,9 @@ function ProdutoCard({ product, key }: { product: Product, key: number }) {
 
     let addedQuantity = howManyOfTheseWereAddedToTheCart(carrinho, product._id);
 
-    function RemoverDoCarrinho(e: React.MouseEvent<HTMLElement>):void { dispatch(adicionarProdutoAoCarrinho(product._id, -1)); animarAdicao(e, -1) }
+    function RemoverDoCarrinho(e: React.MouseEvent<HTMLElement>): void { dispatch(adicionarProdutoAoCarrinho(product._id, -1)); animarAdicao(e, -1) }
 
-    function AdicionarAoCarrinho(e: React.MouseEvent<HTMLElement>):void { dispatch(adicionarProdutoAoCarrinho(product._id, 1)); animarAdicao(e) }
+    function AdicionarAoCarrinho(e: React.MouseEvent<HTMLElement>): void { dispatch(adicionarProdutoAoCarrinho(product._id, 1)); animarAdicao(e) }
 
     let offerEnabled = product.offer.enabled;
 

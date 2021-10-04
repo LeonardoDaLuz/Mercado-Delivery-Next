@@ -15,7 +15,7 @@ import { combinePathWithQuery2 } from 'utils/combinePathWithQuery';
 import Login from '@components/Login';
 import { getUrlPathWithoutQuery } from '@utils/routerUtility';
 import { AppState } from '@store';
-import { logout, logoutThunk } from '@slices/userSlice';
+import { logoutThunk } from '@slices/userSlice';
 
 
 function Header_() {
@@ -33,9 +33,9 @@ function Header_() {
 
     useEffect(() => {
 
-        if(user.token)
+        if (user.token)
             dispatch(carregarCarrinho(user.token));
-        
+
     }, [user.token])
 
     function buscaSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -66,16 +66,18 @@ function Header_() {
                                 {(user.status !== 'LOGGED' &&
                                     <Link href={combinePathWithQuery2(routerPath, { ...router.query, login: 'true' })}>Entrar</Link>
                                 ) ||
-                                    <a href='#' onClick={()=>dispatch(logoutThunk())}>Sair</a>
+                                    <a href='#' onClick={() => dispatch(logoutThunk())}>Sair</a>
                                 }
                             </li>
-                        
-                            <li className="d-block">
-                                <Carrinho id="carrinho" href="#">
-                                    <div className="quantidade">{quantosProdutosTemNoCarrinho(carrinhoState)}</div>
-                                    <div className="custo">R$ {custoTotalNoCarrinho(carrinhoState)}</div>
 
-                                </Carrinho>
+                            <li className="d-block">
+                                <Link href="/mychart">
+                                    <Carrinho id="carrinho" href="#">
+                                        <div className="quantidade">{quantosProdutosTemNoCarrinho(carrinhoState)}</div>
+                                        <div className="custo">R$ {custoTotalNoCarrinho(carrinhoState)}</div>
+
+                                    </Carrinho>
+                                </Link>
                             </li>
                         </MenuPrincipal>
                     </Row>
@@ -97,7 +99,7 @@ function quantosProdutosTemNoCarrinho(carrinho: any) { //jogar isso no util depo
     return qty;
 }
 
-function custoTotalNoCarrinho(carrinho: any) {
+export function custoTotalNoCarrinho(carrinho: any) {
 
     let custo = 0;
 

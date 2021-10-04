@@ -23,8 +23,6 @@ export default async function moveElementFromTo(img, from, to, dir = 1) {
     UpdatePosition();
 
     document.body.append(_img);
-
-
     let duracao = 0.5;
     let time = 0;
     while (time < duracao) {
