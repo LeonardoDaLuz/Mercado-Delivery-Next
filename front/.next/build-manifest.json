@@ -24,15 +24,15 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/mychart": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/mychart.js"
-    ],
     "/purchases": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
       "static/chunks/pages/purchases.js"
+    ],
+    "/purchases/[id]": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/purchases/[id].js"
     ]
   },
   "ampFirstPages": []

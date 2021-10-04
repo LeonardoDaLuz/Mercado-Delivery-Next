@@ -113,6 +113,7 @@ class ChartController {
         const purchase = req.body;
         delete purchase['_id'];
         purchase.account_id = req.account_id;
+        purchase.createdAt = new Date().toISOString();
 
         await ChartController.loadCarrinhoProductDatas(purchase);
 

@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { ProductRegister } from '@slices/chartSlice';
 import { Product } from '@slices/productsSlice';
 import { AppThunk } from '@store';
+import { WritableDraft } from 'immer/dist/internal';
 import { HYDRATE } from 'next-redux-wrapper';
 
 interface PurchasesState {
@@ -28,26 +29,31 @@ export type Purchase = {
 
 }
 
+type ReducerFunctions = {
+    [key: string]: (state: WritableDraft<PurchasesState>, action: PayloadAction<PurchasesPayload>) => void
+}
+
 const initialState: PurchasesState = {};
 
-
-export const purchasesSlice = createSlice({
+export const purchasesSlice = createSlice<PurchasesState, ReducerFunctions>({
     name: 'purchases',
     initialState,
     reducers: {
-        loadPurchasesStart: (state, action: PayloadAction<PurchasesPayload>) => {
+        loadPurchasesStart: (state, action) => {
         },
-        loadPurchasesSuccess: (state, action: PayloadAction<PurchasesPayload>) => {
+        loadPurchasesSuccess: (state, action) => {
+            
             for (let purchase of action.payload.purchases!) {
                 state[purchase._id] = purchase;
             }
         },
 
-        loadPurchasesFailure: (state, action: PayloadAction<PurchasesPayload>) => {
+        loadPurchasesFailure: (state, action) => {
         },
-        purchaseCreated: (state, action: PayloadAction<PurchasesPayload>) => {
+        purchaseCreated: (state, action) => {
             state[action.payload.purchase!._id] = action.payload.purchase as Purchase
         },
+
 
     },
     /* extraReducers: {

@@ -4,7 +4,7 @@ import { loadPurchasesSuccess, purchaseCreated } from '@slices/purchasesSlice';
 import { AppThunk } from '@store';
 import { HYDRATE } from 'next-redux-wrapper';
 
-interface ChartState {
+export type ChartState = {
     produtos: {
         [key: string]: ProductRegister
     },

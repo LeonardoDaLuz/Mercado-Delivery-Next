@@ -171,7 +171,7 @@ function Purchase({ purchase }: { purchase: PurchaseType }) {
                     <a><ButtonFlat>Efetuar pagamento</ButtonFlat></a>
                 </Link>
                 <ButtonFlat>Cancelar pedido</ButtonFlat>
-                <Link href={'/purchases/' + purchase._id+"/edit"}>
+                <Link href={'/purchases/' + purchase._id}>
                     <a><ButtonFlat>Editar pedido</ButtonFlat> </a>
                 </Link>
                 <strong>Contato</strong>

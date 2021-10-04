@@ -387,11 +387,12 @@ const spin = keyframes`
 export const LoaderWheel = styled.div`
     display: inline-block;
     vertical-align: middle;
-    width: 45px;
-    height: 45px;
+    width: ${({width='45'})=>width+'px'};
+    height: ${({height='45'})=>height+'px'};
     background: transparent url(${assets.update_icon}) no-repeat center center;
     background-size: contain;
     animation: ${spin} 0.5s linear infinite;
+    color: red;
 `;
 
 export const FadeBackground = styled.div`
