@@ -5,15 +5,26 @@ import styled from "styled-components";
 export const Container = styled.main`
     max-width: 1000px;
     margin: 0 auto;
-
-
-
 `;
 
 export const MyChartContainer = styled.div`
-
+    padding-top: 20px;
 table {
         width: 100%;
+    }
+`;
+
+export const TitleEditOrder = styled.div`
+    h1 {
+        display: inline;
+        vertical-align: middle;
+    }
+    span {
+        color: hsl(0,0%,50%);
+        font-weight: bold;
+        margin-left: 15px;
+        vertical-align: sub;
+        font-size: 18px;
     }
 `;
 
@@ -53,7 +64,14 @@ export const PedidoOptions = styled.div`
 `;
 
 export const AddressConfigContainer = styled.div`
-
+    h2 {
+        padding-top: 25px;
+        span{
+            font-size: 18px;
+            color: hsl(0,0%,50%);
+        }
+    }
+    
 `;
 
 export const ErrorLabel = styled.span`
@@ -62,6 +80,7 @@ export const ErrorLabel = styled.span`
 
 export const PaymentContainer = styled.div`
 
+    padding-top: 25px;
 `;
 
 export const PayOnDelivery = styled.div`
@@ -71,11 +90,45 @@ export const PayOnDelivery = styled.div`
     height: 350px;
 `;
 
+export const PayWithCreditCard = styled.div`
+    display: flex;
+
+    align-items: flex-end;
+    width: 320px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 83px;
+    margin-bottom: 83px;
+    pointer-events: none;
+    opacity: 0.5;
+
+    &>div {
+        flex: 0 0 100%;
+      
+  
+        label {
+            display: block;
+        }
+
+        input {
+            width: 100%;
+        }       
+    }
+
+
+
+
+`;
+
+
 export const PayWithPix = styled.div`
 
    max-width: 500px;
-   margin: 0 auto;
-
+   margin: 45px auto;
+   pointer-events: none;
+    
+    
    input {
        width: 100%;
    }
@@ -106,6 +159,7 @@ export const PurchaseContainer = styled.div`
     padding: 20px;
     box-shadow: 0px 3px 3px rgb(0,0,0,0.15);
     display: flex;
+    margin-bottom: 25px;
 `;
 
 export const PurchaseIcon = styled.div`
@@ -162,7 +216,8 @@ export const PurchaseStatus = styled.div`
 
     &:after {
         content: "";
-        flex: 1 1 200px;
+        flex: 1 1 auto;
+        
     
     }
 
@@ -171,12 +226,14 @@ export const PurchaseStatus = styled.div`
     }
 
     &>div {
-        flex: 1 0 200px;
+        flex: 0 0 33%;
         padding: 5px 0px;
+
+
     }
 `;
 
-export const PurchaseOptions =  styled.div`
+export const PurchaseOptions = styled.div`
 flex: 1 1 100px;
 padding: 0 10px;
 
@@ -188,4 +245,36 @@ button {
 strong {
     display: block;
 }
+`;
+
+
+export const ModalConfirmedPaymentContainer = styled.div`
+    height: 400px;
+    width: 400px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+    background-color: white;
+    border-radius: 15px;
+
+    &>div {
+        flex: 1 1 auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    strong {
+        font-size: 25px;
+        color: ${colorTheme.primary600};
+        display: block;
+    }
+
+    button {
+        
+    }
+
+    a {
+        color: ${colorTheme.primary600}
+    }
 `;

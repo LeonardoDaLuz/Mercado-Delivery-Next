@@ -5,11 +5,11 @@ let _colorTheme = {
     contentText: 'black',
     siteBackground: 'hsl(120, 86%, 23.7%)',
     primary: '#0dad0d',
-    primaryText:  'white',
+    primaryText: 'white',
     secondary: '#2457D0',
     tertiary: 'white',
     tertiaryText: '#0dad0d',
-    neutral: 'grey', 
+    neutral: 'grey',
     warning: '#de4b21',
     lightPrimary: '#c4ffc4',
     primaryComplementary: 'rgb(137, 137, 137)',
@@ -19,11 +19,15 @@ let _colorTheme = {
     text: 'black',
     complementaryText: '#a1a1a1',
     hilightText: 'rgb(2, 157, 2)',
+    primary500: 'hsl(120, 86% ,37%)',
+    primary600: 'hsl(120, 86% ,30%)',
+    primary700: 'hsl(120, 86% ,21%)',
+    primary800: 'hsl(120, 86% ,14%)',
+    primary900: 'hsl(120, 86% ,10%)',
 }
 
 function createAdvancedColorThemeObject(themeObject) {
     let newObj = {};
-    let _bakedColors = {};
     let hslValues = {}
     let keys = Object.keys(themeObject);
     keys.forEach(key => {

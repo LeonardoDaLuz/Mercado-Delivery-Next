@@ -1,7 +1,7 @@
 import DefaultHeaderAndFooter from "@layouts/DefaultHeaderAndFooter"
 import { ImageLoader } from "next/image"
 import { ReactElement, useEffect } from "react"
-import { Date_, PurchaseContainer, PurchaseIcon, PurchaseList, PurchaseOptions, PurchasesContainer, PurchaseStatus, Quantity, Total } from '@components/Purchases/style';
+import { PurchaseContainer, PurchaseIcon, PurchaseList, PurchaseOptions, PurchasesContainer, PurchaseStatus,  } from '@components/Purchases/style';
 import { useDispatch, useSelector } from "react-redux";
 import { loadPurchasesThunk } from "@slices/purchasesSlice";
 import type { Purchase as PurchaseType } from "@slices/purchasesSlice";
@@ -120,6 +120,7 @@ function Purchase({ purchase }: { purchase: PurchaseType }) {
     }
     return (
         <PurchaseContainer>
+
             <PurchaseIcon>
                 {productIcons}
             </PurchaseIcon>
@@ -160,7 +161,11 @@ function Purchase({ purchase }: { purchase: PurchaseType }) {
                     </div>
                     <div>
                         <strong>Custo total:</strong>
-                        R$ {calculateTotalCost(purchase).toString().replace('.', ',')}
+                        R$ {calculateTotalCost(purchase).toFixed(2).toString().replace('.', ',')}
+                    </div>
+                    <div>
+                        <strong>Endereço:</strong>
+                        {purchase.address.street}, {purchase.address.number} ({purchase.address.cep}) - {purchase.address.district}, {purchase.address.city} 
                     </div>
                 </PurchaseStatus>
             </div>
@@ -174,9 +179,10 @@ function Purchase({ purchase }: { purchase: PurchaseType }) {
                 <Link href={'/purchases/' + purchase._id}>
                     <a><ButtonFlat>Editar pedido</ButtonFlat> </a>
                 </Link>
-                <strong>Contato</strong>
-                sac@mercadodelivery.com.br
-                41 3425-5498
+                <Link href={'/purchases/' + purchase._id+"/change_address"}>
+                    <a><ButtonFlat>Mudar endereço</ButtonFlat> </a>
+                </Link>
+
             </PurchaseOptions>
         </PurchaseContainer>
     )

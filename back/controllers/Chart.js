@@ -1,5 +1,4 @@
-
-
+const ObjectID = require('mongodb').ObjectID;
 
 class ChartController {
 
@@ -125,6 +124,36 @@ class ChartController {
             res.status(500).json({ error: "error on create purchase" });
         } 
 
+
+    }
+
+    static async restorePurchaseToMyChart(req, res) {
+
+        
+        const purchase = req.body;
+        delete purchase['_id'];
+
+        const chart = await global.conn.collection("carrinhos").findOne({ account_id: req.account_id });
+        delete chart['_id'];
+        chart.produtos = {};
+
+        if (purchase.produtos) {
+            for (let productRecordIdKey in purchase.produtos) {
+                const productRecord = purchase.produtos[productRecordIdKey];
+                chart.produtos[productRecordIdKey] = {
+                    quantidade: productRecord.quantidade
+                }
+            }
+        }
+
+        const result = await global.conn.collection("carrinhos").updateOne({ account_id: req.account_id }, { $set: chart });
+
+        if (result.result.ok === 1) {
+            await ChartController.loadCarrinhoProductDatas(chart);
+            res.json(chart);
+        } else {
+            resp.status(500).json({ error: "failed to update chart on db", result });
+        }     
 
     }
 }

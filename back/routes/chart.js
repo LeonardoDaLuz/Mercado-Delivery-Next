@@ -10,6 +10,7 @@ module.exports = (app) => {
     app.post("/carrinho/modificarQuantidadeProduto/:objId/:quantidade", verifyJWT, ChartController.modifyQuantityOnChart);
 
     app.post("/chart/confirm_purchase", verifyJWT, ChartController.confirmPurchase);
-
+    
+    app.post("/chart/restorePurchaseToMyChart", verifyJWT, ChartController.restorePurchaseToMyChart);
     
 }

@@ -10,5 +10,8 @@ module.exports = (app) => {
 
     app.post("/purchases/:id", verifyJWT, PurchasesController.savePurchase);
 
+    app.post("/purchases/:id/change_address", verifyJWT, PurchasesController.changePurchaseAddress);
+
+    app.post("/purchases/:id/confirmDeliveryPayment", verifyJWT, PurchasesController.confirmDeliveryPayment);
     
 }

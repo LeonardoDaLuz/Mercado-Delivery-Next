@@ -67,6 +67,15 @@ export const chartSlice = createSlice({
         confirmPurchaseFailure: (state, action: PayloadAction<ChartPayload>) => {
 
         },
+        restorePurchaseToMyChartStart: (state, action: PayloadAction<ChartPayload>) => {
+
+        },
+        restorePurchaseToMyChartSuccess: (state, action: PayloadAction<ChartPayload>) => {
+            Object.assign(state, action.payload.chart)
+        },
+        restorePurchaseToMyChartFailure: (state, action: PayloadAction<ChartPayload>) => {
+
+        },
 
     },
     /* extraReducers: {
@@ -79,14 +88,14 @@ export const chartSlice = createSlice({
      },*/
 })
 
-export const { loadChartStart, loadChartSuccess, loadChartFailure, changeChartProductQuantityStart, changeChartProductQuantitySuccess, changeChartProductQuantityFailure, addProductInChartStart, addProductInChartSuccess, addProductInChartFailure, resetChart, confirmPurchaseStart, confirmPurchasSuccess, confirmPurchaseFailure } = chartSlice.actions
+export const { loadChartStart, loadChartSuccess, loadChartFailure, changeChartProductQuantityStart, changeChartProductQuantitySuccess, changeChartProductQuantityFailure, addProductInChartStart, addProductInChartSuccess, addProductInChartFailure, resetChart, confirmPurchaseStart, confirmPurchasSuccess, confirmPurchaseFailure,restorePurchaseToMyChartStart,    restorePurchaseToMyChartSuccess,    restorePurchaseToMyChartFailure } = chartSlice.actions
 
 export default chartSlice.reducer;
 
 
 /* THUNKS: */
 
-export const confirmPurchase = (chart: ChartState, callBackOnSuccess: Function): AppThunk => {
+export const confirmPurchaseThunk = (chart: ChartState, callBackOnSuccess: Function): AppThunk => {
     return async (dispatch, getState) => {
 
         const url = `http://localhost:3001/chart/confirm_purchase`;
@@ -124,6 +133,44 @@ export const confirmPurchase = (chart: ChartState, callBackOnSuccess: Function):
         }
     }
 }
+
+export const restorePurchaseToMyChartThunk = (purchase: ChartState, callBackOnSuccess: Function): AppThunk => {
+    return async (dispatch, getState) => {
+
+        const url = `http://localhost:3001/chart/restorePurchaseToMyChart`;
+        const body = JSON.stringify(purchase);
+
+        dispatch(restorePurchaseToMyChartStart({ url, body }));
+        const user = getState().user;
+
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-access-token': user.token
+            },
+            body
+        })
+
+        const text = await response.text();
+
+        try {
+            const data = await JSON.parse(text);
+
+            if (data['produtos']) {
+                dispatch(restorePurchaseToMyChartSuccess({ url, chart: data }))
+                
+                if (callBackOnSuccess)
+                    callBackOnSuccess();
+            } else {
+                dispatch(restorePurchaseToMyChartFailure({ error: "stranger response", status: response.status, url, response: text }));
+            }
+        } catch (err: any) {
+            dispatch(restorePurchaseToMyChartFailure({ error: err.stack, status: response.status, url, response: text }));
+        }
+    }
+}
+
 export const carregarCarrinho = (token: string): AppThunk => {
 
     return async (dispatch) => {

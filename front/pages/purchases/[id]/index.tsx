@@ -1,10 +1,10 @@
 import { Flex, InputBlock, RegisterSuccessContainer } from '@components/Register/style';
 import DefaultHeaderAndFooter from '@layouts/DefaultHeaderAndFooter';
 import { ReactElement, useState } from 'react';
-import { AdicionarRemoverDoCarrinho, PedidoOptions, AddressConfigContainer, ErrorLabel, PaymentContainer, MyChartContainer, Container, PayOnDelivery, PayWithPix, PixQRCode, PixQRCodeCopyInput } from '@components/Purchases/style';
+import { AdicionarRemoverDoCarrinho, PedidoOptions, AddressConfigContainer, ErrorLabel, PaymentContainer, MyChartContainer, Container, PayOnDelivery, PayWithPix, PixQRCode, PixQRCodeCopyInput, TitleEditOrder } from '@components/Purchases/style';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '@store';
-import { adicionarProdutoAoCarrinho, ChartState, confirmPurchase, ProductRegister } from '@slices/chartSlice';
+import { adicionarProdutoAoCarrinho, ChartState, restorePurchaseToMyChartThunk, ProductRegister } from '@slices/chartSlice';
 import Image, { ImageLoader } from 'next/image';
 import Link from 'next/link';
 import moveElementFromTo from '@utils/moveElementFromTo';
@@ -14,7 +14,7 @@ import { useFormik } from 'formik';
 import { autoFillWithViaCEP, formatCEP, formatCPF, IsValidCEP, isValidCPF, isValidName, maskTelephone } from '@utils/formUtils';
 import { useRouter } from 'next/router';
 import QRCodePlaceholder from "@assets/svg/QRCodePlaceholder.svg"
-import { Purchase } from '@slices/purchasesSlice';
+import { addProductQuantityOnPurcrhase, loadPurchasesThunk, Purchase, savePurchaseThunk } from '@slices/purchasesSlice';
 import LoaderWheel from '@components/LoaderWheel/LoaderWheel';
 
 
@@ -91,7 +91,8 @@ function MyChart() {
             return rootState.purchases[router.query.id as string];
     });
 
-    const [enableLoaderWheel, setEnableLoaderWheel] = useState(false);
+    const [showSaveLoaderWheel, setShowSaveLoaderWheel] = useState(false);
+    const [showRestoreToChartLoaderWheel, setShowRestoreToChartLoaderWheel] = useState(false);
 
     const formik = useFormik<AddressConfig>({
         initialValues: {
@@ -125,13 +126,15 @@ function MyChart() {
 
     let content;
 
+    const isMyChart = router.query.id === "mychart";
+
     return (
         <Container>
             <MyChartContainer>
-                <h1>{
-                    (router.query.id === "mychart" && "Meu Carrinho") ||
-                    "Editar Pedido"
-                }</h1>
+                {
+                    (isMyChart && <h1>Meu Carrinho</h1>) ||
+                    <TitleEditOrder><h1>Editar Pedido</h1><span>#{router.query.id}</span></TitleEditOrder>
+                }
 
                 <table>
                     <thead>
@@ -144,7 +147,7 @@ function MyChart() {
                         </tr>
                     </thead>
                     <tbody>
-                        {produtos.map(produto => <Product product={produto} />)}
+                        {produtos.map(produto => <ProductOnList product={produto} isMyChart={isMyChart} purchaseId={router.query.id as string} />)}
                     </tbody>
                     <tfoot>
                         <tr>
@@ -159,24 +162,35 @@ function MyChart() {
                             <ButtonFlat>Limpar carrinho</ButtonFlat>
                             <ButtonFlat onClick={() => router.back()}>Voltar</ButtonFlat>
                             <ButtonFlat onClick={() => {
-                                setEnableLoaderWheel(true);
-                                dispatch(confirmPurchase(chart, () => setEnableLoaderWheel(false)))
+                                setShowSaveLoaderWheel(true);
+                                dispatch(restorePurchaseToMyChartThunk(chart, () => setShowSaveLoaderWheel(false)))
                             }}>
-                                {enableLoaderWheel && <LoaderWheel />}
+                                {showSaveLoaderWheel && <LoaderWheel />}
                                 Confirmar pedido
                             </ButtonFlat>
                         </>) ||
                         <>
                             <ButtonFlat onClick={() => router.back()}>Voltar</ButtonFlat>
-                            <ButtonFlat onClick={() => router.back()}>Restaurar para o carrinho</ButtonFlat>
-                            <ButtonFlat onClick={() => {
-                                setEnableLoaderWheel(true);
-                                dispatch(confirmPurchase(chart, () => {
-                                    setEnableLoaderWheel(false);
-                                    router.push('/purchases/')
-                                }))
-                            }}>
-                                {enableLoaderWheel && <LoaderWheel />}
+                            <ButtonFlat
+                                onClick={() => {
+                                    setShowRestoreToChartLoaderWheel(true);
+                                    dispatch(restorePurchaseToMyChartThunk(chart as Purchase, () => {
+                                        setShowRestoreToChartLoaderWheel(false);
+                                        router.push('/purchases/')
+                                    }))
+                                }}>
+                                {showRestoreToChartLoaderWheel && <LoaderWheel />}
+                                Restaurar para o carrinho
+                            </ButtonFlat>
+                            <ButtonFlat
+                                onClick={() => {
+                                    setShowSaveLoaderWheel(true);
+                                    dispatch(savePurchaseThunk(chart as Purchase, () => {
+                                        setShowSaveLoaderWheel(false);
+                                        router.push('/purchases/')
+                                    }))
+                                }}>
+                                {showSaveLoaderWheel && <LoaderWheel />}
                                 Salvar pedido
                             </ButtonFlat>
                         </>
@@ -192,7 +206,7 @@ const myImageLoader: ImageLoader = ({ src, width, quality }) => {
     return `http://localhost:3001/${src}?w=${width}&q=${quality || 75}`
 }
 
-function Product({ product }: { product: ProductRegister }) {
+function ProductOnList({ product, isMyChart, purchaseId }: { product: ProductRegister, isMyChart: boolean, purchaseId: string }) {
 
     const dispatch = useDispatch();
 
@@ -222,15 +236,23 @@ function Product({ product }: { product: ProductRegister }) {
                 <button
                     disabled={product.quantidade < 1}
                     onClick={(e) => {
-                        dispatch(adicionarProdutoAoCarrinho(product.data!._id, -1));
-                        animarAdicao(e, -1);
+                        if (isMyChart) {
+                            dispatch(adicionarProdutoAoCarrinho(product.data!._id, -1));
+                            animarAdicao(e, -1);
+                        } else {
+                            dispatch(addProductQuantityOnPurcrhase({ purchaseId, quantity: -1, productId: product.data!._id }));
+                        }
                     }}
                 >-</button>
                 <div>{product.quantidade}</div>
                 <button
                     onClick={(e) => {
-                        dispatch(adicionarProdutoAoCarrinho(product.data!._id, 1));
-                        animarAdicao(e, +1);
+                        if (isMyChart) {
+                            dispatch(adicionarProdutoAoCarrinho(product.data!._id, 1));
+                            animarAdicao(e, +1);
+                        } else {
+                            dispatch(addProductQuantityOnPurcrhase({ purchaseId, quantity: +1, productId: product.data!._id }));
+                        }
                     }
                     }>+</button>
             </AdicionarRemoverDoCarrinho>

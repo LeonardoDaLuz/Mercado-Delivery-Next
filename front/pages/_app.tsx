@@ -6,6 +6,7 @@ import Head from 'next/head'
 import { ReactElement, ReactNode } from "react";
 import { NextPage } from "next";
 import { AppProps } from "next/app";
+import Modal from "@components/Modal";
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode
@@ -28,6 +29,8 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
         <link rel="icon" href="/mercado_delivery_isolated_logo.svg" />
       </Head>
       <GlobalStyle />
+      <Modal />
+  
       {getLayout(<Component {...pageProps} />)}
     </>
   )

@@ -60,8 +60,12 @@ function Header_() {
                         <Sandwich id="sidebar-toogler">
                         </Sandwich>
                         <MenuPrincipal>
-                            <li>Crie sua conta</li>
-                            <li>Compras</li>
+
+                            {user.token && <li>Minha conta</li>
+                                || <li>Cadastrar conta</li>}
+                            {user.token && <li><Link href='/purchases'><a>Meus pedidos</a></Link></li>
+                            }
+
                             <li>
                                 {(user.status !== 'LOGGED' &&
                                     <Link href={combinePathWithQuery2(routerPath, { ...router.query, login: 'true' })}>Entrar</Link>
@@ -71,7 +75,7 @@ function Header_() {
                             </li>
 
                             <li className="d-block">
-                                <Link href="/mychart">
+                                <Link href="/purchases/mychart">
                                     <Carrinho id="carrinho" href="#">
                                         <div className="quantidade">{quantosProdutosTemNoCarrinho(carrinhoState)}</div>
                                         <div className="custo">R$ {custoTotalNoCarrinho(carrinhoState)}</div>
